@@ -9,6 +9,8 @@ import MiejscaReligijne from './components/userNotLogged/MiejscaReligijne';
 import MiejscaHistoryczne from './components/userNotLogged/MiejscaHistoryczne';
 import NotLoggedNav from './components/userNotLogged/NotLoggedNav';
 
+import "./App.css";
+
 const router = createBrowserRouter([
  {
     
