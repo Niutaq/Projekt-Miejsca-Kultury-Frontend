@@ -1,13 +1,13 @@
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
-import MainPage from "./components/userNotLogged/MainPage";
-import LoginPage from "./components/userNotLogged/LoginPage";
-import InstytucjeKulturalne from "./components/userNotLogged/InstytucjeKulturalne"; 
-import CentraKulturalne from "./components/userNotLogged/CentraKulturalne"; 
-import CentraNaukowe from './components/userNotLogged/CentraNaukowe';
-import MiejscaRekreacyjne from './components/userNotLogged/MiejscaRekreacyjne';
-import MiejscaReligijne from './components/userNotLogged/MiejscaReligijne';
-import MiejscaHistoryczne from './components/userNotLogged/MiejscaHistoryczne';
-import NotLoggedNav from './components/userNotLogged/NotLoggedNav';
+import MainPage from "./components/userNotLogged/MainPage/MainPage";
+import LoginPage from "./components/userNotLogged/LoginPage/LoginPage";
+import InstytucjeKulturalne from "./components/userNotLogged/InstytucjeKulturalne/InstytucjeKulturalne"; 
+import CentraKulturalne from "./components/userNotLogged/CentraKulturalne/CentraKulturalne"; 
+import CentraNaukowe from './components/userNotLogged/CentraNaukowe/CentraNaukowe';
+import MiejscaRekreacyjne from './components/userNotLogged/MiejscaRekreacyjne/MiejscaRekreacyjne';
+import MiejscaReligijne from './components/userNotLogged/MiejscaReligijne/MiejscaReligijne';
+import MiejscaHistoryczne from './components/userNotLogged/MiejscaHistoryczne/MiejscaHistoryczne';
+import NotLoggedNav from './components/userNotLogged/NotLoggedNav/NotLoggedNav';
 
 import "./App.css";
 
