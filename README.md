@@ -1,1 +1,0 @@
-# Projekt-Miejsca-Kultury-Frontend
