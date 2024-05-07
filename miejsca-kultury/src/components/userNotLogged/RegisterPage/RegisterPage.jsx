@@ -56,8 +56,8 @@ const RegisterPage = () => {
         e.preventDefault();
         let regobj = { name, surname, email, password, repeatPassword };
         if (IsValidate()) {
-            //console.log(regobj);
-            fetch('http://localhost:5000/register', {
+            console.log(regobj);
+            fetch('http://localhost:5000/api/register', {
                 method: 'POST',
                 headers: { 'content-type': 'application/json' },
                 body: JSON.stringify(regobj)

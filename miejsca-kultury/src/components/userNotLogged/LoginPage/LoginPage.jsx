@@ -13,7 +13,7 @@ const LoginPage = () => {
         let logobj = { email, password };
         if (validate()) {
             //console.log('proceed');
-            fetch('http://localhost:5000/sign-in', {
+            fetch('http://localhost:5000/api/sign-in', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(logobj)
