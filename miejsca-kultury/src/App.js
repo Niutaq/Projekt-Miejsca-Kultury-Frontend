@@ -10,7 +10,7 @@ import MiejscaHistoryczne from './components/userNotLogged/MiejscaHistoryczne/Mi
 import NotLoggedNav from './components/userNotLogged/NotLoggedNav/NotLoggedNav';
 import ResetPassword from './components/userNotLogged/ResetPassword/resetPassword';
 import ForgotPassword from './components/userNotLogged/ForgotPassword/forgotPassword';
-
+import ConfirmAccount from './components/userNotLogged/ConfirmAccount/ConfirmAccount';
 import "./App.css";
 
 const router = createBrowserRouter([
@@ -27,7 +27,8 @@ const router = createBrowserRouter([
       { path: "/miejsca-religijne", element: <MiejscaReligijne /> },
       { path: "/miejsca-historyczne", element: <MiejscaHistoryczne /> },
       { path: "/forgot-password", element: <ForgotPassword/> },
-      { path: "/reset-password", element: <ResetPassword/> }
+      { path: "/reset-password", element: <ResetPassword/> },
+      { path: "/confirm-account", element: <ConfirmAccount/> }
     ],
  },
 ]);
