@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
+import { ToastContainer, toast } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 
 const LoginPage = () => {
     const [email, emailUpdate] = useState('')
@@ -8,29 +9,6 @@ const LoginPage = () => {
 
     const usenavigate = useNavigate();
 
-    const ProcederLogin = (e) => {
-        e.preventDefault();
-        let logobj = { email, password };
-        if (validate()) {
-            //console.log('proceed');
-            fetch('http://localhost:5000/api/sign-in', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(logobj)
-            }).then((resp) => {
-                if (resp.status === 200) {
-                    toast.success('Logowanie powiodło się')
-                    usenavigate('/welcomepage')
-                } else if (resp.status === 400) {
-                    toast.error('Błędny email lub hasło. Spróbuj ponownie');
-                } else {
-                    toast.error("Wystąpił nieoczekiwany błąd. Spróbuj ponownie póżniej");
-                }
-            }).catch((err) => {
-                toast.error('Logowanie nie powiodło się ' + err.message);
-            });
-        }
-    }
     const validate = () => {
         let result = true;
         if (email === '' || email === null) {
@@ -46,10 +24,44 @@ const LoginPage = () => {
 
     }
 
+    
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        let logobj = { email, password };
+        if (validate()) {
+            try {
+                const response = await fetch('http://localhost:5000/api/sign-in', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(logobj)
+                });
+
+                const data = await response.json();
+                const message = JSON.stringify(data)
+                const messageToDisplay = JSON.parse(message)
+                if (response.ok) {
+                    localStorage.setItem('token',data.accessToken);
+                    localStorage.setItem('name',data.name);
+                    localStorage.setItem('surname',data.surname);
+                    localStorage.setItem('avatar',data.avatarUrl);
+                    usenavigate('/welcomepage')
+                } else {
+                    toast.error(`${messageToDisplay.title}`);
+                    Object.entries(data.errors).forEach(([key, value]) => {
+                        toast.error(value.join(', '));
+                });
+                }
+            } catch (error) {
+                console.error("Błąd:",error.message)
+            }
+        }
+    }
+
+
     return (
         <div className="row">
             <div className="offset-lg-3 col-lg-6">
-                <form className="container" onSubmit={ProcederLogin} style={{ marginTop: '50px' }}>
+                <form className="container" onSubmit={handleSubmit} style={{ marginTop: '50px' }}>
                     <div className="card">
                         <div className="card-header" style={{ display: 'flex', justifyContent: 'center' }}>
                             <h2>Logowanie</h2>
@@ -72,7 +84,7 @@ const LoginPage = () => {
                                 </div>
                             </div>
                             <div className="card-footer">
-                                <span className="forgot-password">Zapomniałeś hasła? <Link to={'/changepassword'}>Kliknij tutaj</Link></span>
+                                <span className="forgot-password">Zapomniałeś hasła? <Link to={'/forgot-password'}>Kliknij tutaj</Link></span>
                             </div>
 
                             <div className="card-footer" style={{ display: 'flex', justifyContent: 'center' }}>
@@ -86,7 +98,7 @@ const LoginPage = () => {
                 </form>
 
             </div>
-
+            <ToastContainer />
         </div>
     )
 }

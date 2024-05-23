@@ -1,134 +1,135 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
+import { ToastContainer, toast } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 
 const RegisterPage = () => {
-    const [name, nameChange] = useState('')
-    const [surname, surnameChange] = useState('')
-    const [email, emailChange] = useState('')
-    const [password, passwordChange] = useState('')
-    const [repeatPassword, repeatpasswordChange] = useState('')
+    const [name, setName] = useState('');
+    const [surname, setSurname] = useState('');
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [repeatPassword, setRepeatPassword] = useState('');
 
     const navigate = useNavigate();
+    const isValidate = () => {
+        let isProceed = true;
+        let errorMessage = 'Proszę uzupełnić brakujące dane: ';
+        
+        if (!name) {
+            isProceed = false;
+            errorMessage += ' Imię';
+        }
+        if (!surname) {
+            isProceed = false;
+            errorMessage += ' Nazwisko';
+        }
+        if (!email) {
+            isProceed = false;
+            errorMessage += ' Email';
+        }
+        if (!password) {
+            isProceed = false;
+            errorMessage += ' Hasło';
+        }
+        if (!repeatPassword) {
+            isProceed = false;
+            errorMessage += ' Powtórz hasło';
+        }
 
-    const IsValidate = () => {
-        let isproceed = true;
-        let errormessage = 'Proszę uzupełnić brakujące dane: ';
-        if (name === null || name === '') {
-            isproceed = false;
-            errormessage += ' Imię';
-        }
-        if (surname === null || surname === '') {
-            isproceed = false;
-            errormessage += ' Nazwisko';
-        }
-        if (email === null || email === '') {
-            isproceed = false;
-            errormessage += ' Email';
-        }
-        if (password === null || password === '') {
-            isproceed = false;
-            errormessage += ' Hasło';
-        }
-        if (repeatPassword === null || repeatPassword === '') {
-            isproceed = false;
-            errormessage += ' Powtórz hasło';
-        }
-
-        if (!isproceed) {
-            toast.warning(errormessage)
+        if (!isProceed) {
+            toast.warning(errorMessage);
         } else {
-            if (/^[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[A-Za-z]+$/.test(email)) {
-
-            } else {
-                isproceed = false;
-                toast.warning('Proszę wpisać poprawny email')
+            const emailPattern = /^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
+            if (!emailPattern.test(email)) {
+                isProceed = false;
+                toast.warning('Proszę wpisać poprawny email');
             }
-        } 
-        if(repeatPassword!== password){
-            isproceed = false;
-            toast.warning('Hasła nie są podobne')
         }
-        return isproceed;
-    }
 
-    const handlesubmit = (e) => {
+        if (repeatPassword !== password) {
+            isProceed = false;
+            toast.warning('Hasła nie są podobne');
+        }
+
+        return isProceed;
+    }
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        let regobj = { name, surname, email, password, repeatPassword };
-        if (IsValidate()) {
-            console.log(regobj);
-            fetch('http://localhost:5000/api/register', {
-                method: 'POST',
-                headers: { 'content-type': 'application/json' },
-                body: JSON.stringify(regobj)
-            }).then((res) => {
-                toast.success('Rejestracja powiodła się')
-                navigate('/login');
-            }).catch((err) => {
-                toast.error('Rejestracja nie powiodła się' + err.message);
-            });
+        let regObj = { name, surname, email, password, repeatPassword };
+        console.log(regObj);
+        if (isValidate()) {
+            try {
+                const response = await fetch('http://localhost:5000/api/register', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(regObj)
+                });
+
+                const data = await response.json();
+                const message = JSON.stringify(data)
+                const messageToDisplay = JSON.parse(message)
+                if (response.ok) {
+                    toast.success(`${messageToDisplay.message}`);
+                } else {
+                    toast.error(`${messageToDisplay.title}`)
+                    Object.entries(data.errors).forEach(([key, value]) => {
+                            toast.error(value.join(', '));
+                    });
+                }
+            } catch (error) {
+                console.error("Błąd:",error.message)
+            }
         }
     }
-
     return (
         <div className="row">
             <div className="offset-lg-3 col-lg-6">
-                <form className="container" onSubmit={handlesubmit} style={{ marginTop: '50px' }}>
+                <form className="container" onSubmit={handleSubmit} style={{ marginTop: '50px' }}>
                     <div className="card">
                         <div className="card-header" style={{ display: 'flex', justifyContent: 'center' }}>
                             <h2>Rejestracja</h2>
                         </div>
                         <div className="card-body">
-
                             <div className="row">
                                 <div className="col-lg-6">
                                     <div className="form-group">
                                         <label>Imię</label>
-                                        <input value={name} onChange={e => nameChange(e.target.value)} className="form-control"></input>
+                                        <input value={name} onChange={e => setName(e.target.value)} className="form-control" />
                                     </div>
                                 </div>
                             </div>
-
-
                             <div className="row">
                                 <div className="col-lg-6">
                                     <div className="form-group">
                                         <label>Nazwisko</label>
-                                        <input value={surname} onChange={e => surnameChange(e.target.value)} className="form-control"></input>
+                                        <input value={surname} onChange={e => setSurname(e.target.value)} className="form-control" />
                                     </div>
                                 </div>
                             </div>
-
-
                             <div className="row">
                                 <div className="col-lg-6">
                                     <div className="form-group">
                                         <label>Email</label>
-                                        <input value={email} onChange={e => emailChange(e.target.value)} className="form-control"></input>
+                                        <input value={email} onChange={e => setEmail(e.target.value)} className="form-control" />
                                     </div>
                                 </div>
                             </div>
-
-
                             <div className="row">
                                 <div className="col-lg-6">
                                     <div className="form-group">
                                         <label>Hasło</label>
-                                        <input type='password' value={password} onChange={e => passwordChange(e.target.value)} className="form-control"></input>
+                                        <input type='password' value={password} onChange={e => setPassword(e.target.value)} className="form-control" />
                                     </div>
                                 </div>
                             </div>
-
-
                             <div className="row">
                                 <div className="col-lg-6">
                                     <div className="form-group">
                                         <label>Powtórz hasło</label>
-                                        <input type='password' value={repeatPassword} onChange={e => repeatpasswordChange(e.target.value)} className="form-control"></input>
+                                        <input type='password' value={repeatPassword} onChange={e => setRepeatPassword(e.target.value)} className="form-control" />
                                     </div>
                                 </div>
                             </div>
-
                         </div>
                         <div className="card-footer" style={{ display: 'flex', justifyContent: 'center' }}>
                             <button type="submit" className="btn btn-primary" style={{ marginRight: '10px' }}>Zarejestruj się</button>
@@ -136,9 +137,8 @@ const RegisterPage = () => {
                         </div>
                     </div>
                 </form>
-
             </div>
-
+            <ToastContainer />
         </div>
     )
 }

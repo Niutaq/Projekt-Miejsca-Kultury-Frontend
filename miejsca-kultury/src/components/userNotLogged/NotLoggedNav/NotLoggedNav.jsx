@@ -8,7 +8,7 @@ import { Outlet, Link } from "react-router-dom";
 export default function NotLoggedNav() {
   return (
     <>
-      <Navbar bg="dark" data-bs-theme="dark" class="fixed top">
+      <Navbar bg="dark" data-bs-theme="dark" className="fixed top">
         <Container>
           <Navbar.Brand>
             <Link className="link-light link-underline-opacity-0" to={"/"}>
