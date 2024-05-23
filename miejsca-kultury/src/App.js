@@ -1,6 +1,9 @@
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import MainPage from "./components/userNotLogged/MainPage/MainPage";
 import LoginPage from "./components/userNotLogged/LoginPage/LoginPage";
+import RegisterPage from "./components/userNotLogged/RegisterPage/RegisterPage";
+import ChangePassword from "./components/userNotLogged/ChangePassword/ChangePassword";
+import WelcomePage from "./components/userNotLogged/WelcomePage/WelcomePage";
 import InstytucjeKulturalne from "./components/userNotLogged/InstytucjeKulturalne/InstytucjeKulturalne"; 
 import CentraKulturalne from "./components/userNotLogged/CentraKulturalne/CentraKulturalne"; 
 import CentraNaukowe from './components/userNotLogged/CentraNaukowe/CentraNaukowe';
@@ -13,6 +16,7 @@ import ForgotPassword from './components/userNotLogged/ForgotPassword/forgotPass
 import ConfirmAccount from './components/userNotLogged/ConfirmAccount/ConfirmAccount';
 import "./App.css";
 
+
 const router = createBrowserRouter([
  {
     
@@ -20,6 +24,9 @@ const router = createBrowserRouter([
     children: [
       { path: "/", element: <MainPage /> },
       { path: "/login", element: <LoginPage /> },
+      { path: "/register", element: <RegisterPage /> },
+      { path: "/changepassword", element: <ChangePassword /> },
+      { path: "/welcomepage", element: <WelcomePage /> },
       { path: "/instytucje-kulturalne", element: <InstytucjeKulturalne /> },
       { path: "/centra-kulturalne", element: <CentraKulturalne /> },
       { path: "/centra-naukowe", element: <CentraNaukowe /> },
