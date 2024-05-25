@@ -24,3 +24,183 @@
 ::-webkit-scrollbar {
     display: none;
 }
+
+.drag_and_drop_card {
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(52, 24, 0, 0.205);
+    border-radius: 7px;
+    overflow: hidden;
+    height: 800px;
+}
+
+.drag_and_drop_description {
+    text-align: center;
+    font-family: 'Outfit', sans-serif;
+    font-size: 30px;
+    color: #000000de;
+}
+
+.drag_and_drop_card button {
+    font-family: 'Outfit', sans-serif;
+    font-size: 18px;
+    background-color: #e1f7ffdb;
+    color: #000000c2;
+    padding: 8px 15px;
+    border: 2px solid rgba(0, 0, 0, 0.222);
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+    margin: 0 auto;
+    display: block;
+    width: 240px;
+    margin-top: 12px;
+}
+
+.drag_and_drop_card button:hover {
+    background-color: #c06900;
+    color: #fff;
+}
+
+.drag_and_drop_card .drop_area {
+    height: 300px;
+    border-radius: 6px;
+    border: 1px dashed rgba(0, 0, 0, 0.265);
+    color: #13374ac2;
+    background-color: rgba(186, 186, 186, 0.045);
+    justify-content: center;
+    align-items: center;
+    user-select: none;
+    -webkit-user-select: none;
+    margin: 12px auto;
+    font-family: 'Outfit', sans-serif;
+    font-size: 30px;
+    display: flex;
+    width: 600px;
+}
+
+.drag_and_drop_card .visible {
+    font-size: 18px;
+}
+
+.drag_and_drop_card .select {
+    color: #1d92b2db;
+    margin-left: 5px;
+    cursor: pointer;
+    transition: 0.5s;
+    font-size: 30px;
+}
+
+.drag_and_drop_card .select:hover {
+    opacity: 0.65;
+}
+
+.drag_and_drop_card .container {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    max-height: 200px;
+    overflow-y: auto;
+    margin-top: 10px;
+    font-family: 'Outfit', sans-serif;
+}
+
+.drag_and_drop_card .container .image img {
+    width: 30%;
+    height: 30%;
+    border-radius: 10px;
+    box-shadow: 0px 0px 5px 2px rgba(0, 0, 0, 0.112);
+}
+
+.drag_and_drop_card .container .image span {
+    position: relative;
+    cursor: pointer;
+    font-size: 40px;
+}
+
+.drag_and_drop_card .container .image input[type="text"] {
+    width: 100%;
+    padding: 10px;
+    margin-top: 10px;
+    margin-left: 300px;
+    border: 2px solid #ccc;
+    border-radius: 5px;
+    font-family: 'Outfit', sans-serif;
+    font-size: 18px;
+    display: block;
+    height: 50px;
+}
+.drag_and_drop_card input,
+.drag_and_drop_card .drop_area .on-drop,
+.drag_and_drop_card .drop_area.dragover .visible {
+    display: none;
+}
+
+.delete {
+    z-index: 999;
+    color: rgb(147, 0, 0);
+}
+
+.comment {
+    z-index: 1000;
+    color: rgb(121, 121, 121);
+    position: relative;
+    top: 5px;
+    right: -5px;
+    font-size: 24px;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.comment:hover {
+    color: #1d92b2db;
+}
+
+.drag_n_drop_card {
+    height: 200px;
+    width: 50%; 
+    background-color: #1500ff0a;
+    max-width: 400px;
+    margin: 0 auto;
+    position: absolute;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    transition: transform 0.3s ease-in-out, background-color 0.3s ease;
+    border-radius: 10px;
+}
+
+.drag_n_drop_card:hover {
+    background-color: #0004ff20;
+}
+
+.drag_n_drop_text{
+    font-family: 'robots', sans-serif;
+    font-size: 25px;
+    position: absolute;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    transition: transform 0.3s ease-in-out, color 0.3s ease;
+    color: #00000092;
+}
+
+.drag_n_drop_text:hover {
+    color: #10114e62;
+}
+
+.location-input {
+    border: none;
+    border-radius: 5px;
+    padding: 6px;
+    font-size: calc(0.9em + 0.1vw);
+    font-family: 'Outfit', 'sans-serif';
+    color: #3333337a;
+    transition: border-color 0.3s ease;
+    margin-left: 18%;
+    margin-top: 0.7%;
+    width: 80%;
+    max-width: 350px;
+}
