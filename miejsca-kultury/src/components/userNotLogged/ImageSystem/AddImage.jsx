@@ -1,11 +1,11 @@
 import React, { useState, useRef } from 'react';
 
 // Card - image template area
-function DragAndDrop() {
-    const [images, setImages] = useState([]);
+function DragAndDrop({ onImageUpload }) {
+    const [image, setImage] = useState(null);
     const [isDragging, setIsDragging] = useState(false);
     const fileInputRef = useRef(null);
-    const [comments, setComments] = useState({});
+    const [comment, setComment] = useState("");
 
     // Function for image selecting
     function selectFiles() {
@@ -16,32 +16,22 @@ function DragAndDrop() {
     function onFileSelect(event) {
         const files = event.target.files;
         if (files.length === 0) return;
-        for (let i = 0; i < files.length; i++) {
-            if (files[i].type.split('/')[0] !== 'image') continue;
-            if (!images.some((e) => e.name === files[i].name)) {
-                const newImage = {
-                    name: files[i].name,
-                    url: URL.createObjectURL(files[i]),
-                };
-                setImages((prevImages) => [...prevImages, newImage]);
-                setComments((prevComments) => ({ ...prevComments, [newImage.name]: "" }));
-            }
-        }
+        const file = files[0];
+        if (file.type.split('/')[0] !== 'image') return;
+        const newImage = {
+            name: file.name,
+            url: URL.createObjectURL(file),
+            type: file.type,
+        };
+        setImage(newImage);
+        setComment("");
     }
 
     // Function for image deleting
-    function deleteImages(index) {
-        const imageName = images[index].name;
-        setImages((prevImages) =>
-            prevImages.filter((_, i) => i !== index)
-        );
-        setComments((prevComments) => {
-            const newComments = { ...prevComments };
-            delete newComments[imageName];
-            return newComments;
-        }); // Delete comment for removed image
+    function deleteImage() {
+        setImage(null);
+        setComment("");
         console.log("File deleted!");
-        console.log("Image: ", images);
     }
 
     // Drag over function
@@ -62,24 +52,49 @@ function DragAndDrop() {
         event.preventDefault();
         setIsDragging(false);
         const files = event.dataTransfer.files;
-        for (let i = 0; i < files.length; i++) {
-            if (files[i].type.split('/')[0] !== 'image') continue;
-            if (!images.some((e) => e.name === files[i].name)) {
-                const newImage = {
-                    name: files[i].name,
-                    url: URL.createObjectURL(files[i]),
-                };
-                setImages((prevImages) => [...prevImages, newImage]);
-                setComments((prevComments) => ({ ...prevComments, [newImage.name]: "" }));
-            }
-        }
+        if (files.length === 0) return;
+        const file = files[0];
+        if (file.type.split('/')[0] !== 'image') return;
+        const newImage = {
+            name: file.name,
+            url: URL.createObjectURL(file),
+            type: file.type,
+        };
+        setImage(newImage);
+        setComment("");
     }
 
     // Function for file uploading
     function uploadFile() {
-        console.log("File uploaded!");
-        console.log("Image: ", images);
-        console.log("Comments: ", comments);
+        if (image) {
+            sendImageToBackend(image);
+            console.log("File uploaded!");
+            console.log("Image: ", image);
+            console.log("Comment: ", comment);
+        } else {
+            console.log("No image to upload!");
+        }
+    }
+
+    // Function to send image data to backend
+    function sendImageToBackend(image) {
+        const formData = new FormData();
+        formData.append('name', image.name);
+        formData.append('type', image.type);
+
+        fetch('http://localhost:5000/api/upload-profile-image', {
+            method: 'PUT',
+            body: formData,
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log('Success:', data);
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+        });
+
+        console.log(formData);
     }
     
     return (
@@ -101,16 +116,16 @@ function DragAndDrop() {
                     </>
                 )}
 
-                <input name="file" type="file" className="image_file" multiple ref={fileInputRef} onChange={onFileSelect} />
+                <input name="file" type="file" className="image_file" ref={fileInputRef} onChange={onFileSelect} />
             </div>
 
             <div className="container">
-                {images.map((image, index) => (
-                    <div className="image" key={index}>
-                        <span className="delete" onClick={() => deleteImages(index)}>&times;</span>
+                {image && (
+                    <div className="image">
+                        <span className="delete" onClick={deleteImage}>&times;</span>
                         <img src={image.url} alt={image.name} />
                     </div>
-                ))}
+                )}
             </div>
             <button type="button" onClick={uploadFile}> Wyślij </button>
         </div>
@@ -118,4 +133,3 @@ function DragAndDrop() {
 }
 
 export { DragAndDrop as default };
-

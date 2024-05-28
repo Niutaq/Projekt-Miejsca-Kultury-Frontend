@@ -4,10 +4,10 @@ import { gsap } from 'gsap';
 
 export default function LocationFunction() {
   const { isLoaded } = useLoadScript({
-    //googleMapsApiKey: process.env.REACT_APP_API_KEY,
-    //mapIds: [process.env.REACT_APP_MAP_ID]
-    googleMapsApiKey: 'AIzaSyDf7a6DZJFBFi1P77NENRRCgd6vIiqA6Ug',
-    mapIds: ['94abaf43d87181fa']
+    googleMapsApiKey: process.env.REACT_APP_API_KEY,
+    mapIds: [process.env.REACT_APP_MAP_ID]
+    //googleMapsApiKey: 'AIzaSyDf7a6DZJFBFi1P77NENRRCgd6vIiqA6Ug',
+    //mapIds: ['94abaf43d87181fa']
   });
 
   const [mapRef, setMapRef] = useState(null);
@@ -64,7 +64,8 @@ export default function LocationFunction() {
         onZoomChanged={onZoomChanged}
         onClick={onMapClick}
         options={{
-          mapId: '94abaf43d87181fa',
+          //mapId: '94abaf43d87181fa',
+          mapId: process.env.REACT_APP_MAP_ID,
           disableDefaultUI: true,
           gestureHandling: 'greedy'
         }}
