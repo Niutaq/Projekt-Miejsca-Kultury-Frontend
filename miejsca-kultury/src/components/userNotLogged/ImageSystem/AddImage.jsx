@@ -13,6 +13,7 @@ function DragAndDrop({ onImageChange }) {
         if (file && file.type.split('/')[0] === 'image') {
             const newImage = {
                 url: URL.createObjectURL(file),
+                file: file
             };
             setImage(newImage);
             onImageChange(newImage);

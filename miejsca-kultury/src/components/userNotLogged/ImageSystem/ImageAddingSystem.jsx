@@ -4,14 +4,14 @@ import LocationFunction from './Location';
 import TextFieldSection from './Comment'
 
 export default function ImageSystem() {
-    const [image, setImage] = useState(null);
+    const [Photos, setImage] = useState(null);
     const [location, setLocation] = useState(null);
     const [name, setName] = useState('');
     const [description, setDescription] = useState('');
     const [selectedPlace,setSelectedPlace] = useState();
 
     const handleImageChange = (newImage) => {
-        setImage(newImage);
+        setImage(newImage.file);
     };
 
     const handleLocationChange = (newLocation) => {
@@ -33,13 +33,13 @@ export default function ImageSystem() {
     }
 
     const handleSubmit = async () => {
-        if (!image || !location || !name || !description || !selectedPlace) {
+        if (!Photos || !location || !name || !description || !selectedPlace) {
             alert("Podaj zdjęcie, lokalizację, nazwę oraz opis miejsca kultury.");
             return;
         }
 
         const data = {
-            image,
+            Photos,
             location,
             name,
             description,
@@ -52,7 +52,7 @@ export default function ImageSystem() {
 
         try {
             const formData = new FormData();
-            formData.append('photos', image);
+            formData.append('Photos', Photos);
             formData.append('location', location);
             formData.append('title', name);
             formData.append('description', description);
