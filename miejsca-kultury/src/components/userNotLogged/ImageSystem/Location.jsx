@@ -4,8 +4,8 @@ import { gsap } from 'gsap';
 
 export default function LocationFunction({ onLocationChange }) {
     const { isLoaded } = useLoadScript({
-        googleMapsApiKey: process.env.REACT_APP_API_KEY,
-        mapIds: [process.env.REACT_APP_MAP_ID]
+        googleMapsApiKey: 'AIzaSyDf7a6DZJFBFi1P77NENRRCgd6vIiqA6Ug',
+        mapIds: ['94abaf43d87181fa']
     });
 
     const [markerPosition, setMarkerPosition] = useState({ lat: 50.041187, lng: 21.999121 });
@@ -32,7 +32,7 @@ export default function LocationFunction({ onLocationChange }) {
         const newLat = event.latLng.lat();
         const newLng = event.latLng.lng();
         setMarkerPosition({ lat: newLat, lng: newLng });
-        onLocationChange({ lat: newLat, lng: newLng });
+        onLocationChange(newLat, newLng);
     };
 
     if (!isLoaded) {
@@ -47,7 +47,7 @@ export default function LocationFunction({ onLocationChange }) {
                 center={markerPosition}
                 onClick={onMapClick}
                 options={{
-                    mapId: process.env.REACT_APP_MAP_ID,
+                    mapId: '94abaf43d87181fa',
                     disableDefaultUI: true,
                     gestureHandling: 'greedy'
                 }}
