@@ -98,7 +98,10 @@ export default function ImageSystem() {
                 },
                 body: formData
             });
-            console.log(JSON.stringify(response.status))
+            const responseStatus = JSON.stringify(response.status)
+            if(responseStatus== 401){
+                toast.error('Nie można wykonać takiej operacji');
+            }
             const cos = await response.json();
             const message = JSON.stringify(cos)
             const messageToDisplay = JSON.parse(message)
@@ -111,19 +114,19 @@ export default function ImageSystem() {
                 });
             }
         } catch (error) {
-            toast.error(`Wystąpił błąd: ${error.message}`);
+
         }
     };
 
     return (
         <div>
             <select value={Category} onChange={handlePlaceChange}>
-                <option value={0}>CulturalCenters</option>
-                <option value={1}>ScienceCenters</option>
-                <option value={2}>CulturalInstitutions</option>
-                <option value={3}>HistoricalPlaces</option>
-                <option value={4}>RecreationalPlaces</option>
-                <option value={5}>ReligiousPlaces</option>
+                <option value={0}>Centra kulturalne</option>
+                <option value={1}>Centra naukowe</option>
+                <option value={2}>Instytucje kulturalne</option>
+                <option value={3}>Miejsca historyczne</option>
+                <option value={4}>Miejsca rekreacyjne</option>
+                <option value={5}>Miejsca religijne</option>
             </select>
             <TextFieldSection onChange={handleNameChange} placeholder={'Nazwa miejsca'}/>
             <TextFieldSection onChange={handleDescriptionChange} placeholder={'Opis miejsca'}/>
