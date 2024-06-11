@@ -13,10 +13,8 @@ export default function ImageSystem() {
     const [Description, setDescription] = useState('');
     const [Category,setSelectedPlace] = useState();
 
-
-    
     const handleImageChange = (newImage) => {
-        setImage(newImage.file);
+        setImage(newImage ? newImage.file : null);
     };
 
     const handleLocationChange = (lat, lng) => {
@@ -25,12 +23,12 @@ export default function ImageSystem() {
 
     const handleNameChange = (event) => {
         setName(event.target.value);
-        console.log(event.target.value);
+        console.log(event.target.value)
     };
 
     const handleDescriptionChange = (event) => {
         setDescription(event.target.value);
-        console.log(event.target.value);
+        console.log(event.target.value)
     };
 
     const handlePlaceChange = (event) => {
@@ -98,41 +96,47 @@ export default function ImageSystem() {
                 },
                 body: formData
             });
-            const responseStatus = JSON.stringify(response.status)
-            if(responseStatus === 401) {
+            const responseStatus = JSON.stringify(response.status);
+            if(responseStatus === 401){
                 toast.error('Nie można wykonać takiej operacji');
             }
-            const cos = await response.json();
-            const message = JSON.stringify(cos);
+            const res = await response.json();
+            const message = JSON.stringify(res);
             const messageToDisplay = JSON.parse(message);
             if (response.ok) {
                 toast.success(`${messageToDisplay.message}`);
             }
             else{
-                Object.entries(cos.errors).forEach(([key, value]) => {
+                Object.entries(res.errors).forEach(([key, value]) => {
                     toast.error(value.join(', '));
                 });
             }
-        } catch (error) {}
+        } catch (error) {
+
+        }
     };
 
     return (
         <div>
-            <select value={Category} className="option_list" onChange={handlePlaceChange}>
-                <option value={0} className="option_item">Centra kulturalne</option>
-                <option value={1} className="option_item">Centra naukowe</option>
-                <option value={2} className="option_item">Instytucje kulturalne</option>
-                <option value={3} className="option_item">Miejsca historyczne</option>
-                <option value={4} className="option_item">Miejsca rekreacyjne</option>
-                <option value={5} className="option_item">Miejsca religijne</option>
+            <select 
+                value={Category} 
+                onChange={handlePlaceChange} 
+                className="styled-select"
+            >
+                <option value={0}>Centra kulturalne</option>
+                <option value={1}>Centra naukowe</option>
+                <option value={2}>Instytucje kulturalne</option>
+                <option value={3}>Miejsca historyczne</option>
+                <option value={4}>Miejsca rekreacyjne</option>
+                <option value={5}>Miejsca religijne</option>
             </select>
-            
             <TextFieldSection onChange={handleNameChange} placeholder={'Nazwa miejsca'}/>
             <TextFieldSection onChange={handleDescriptionChange} placeholder={'Opis miejsca'}/>
             <LocationFunction onLocationChange={handleLocationChange} />
             <DragAndDrop onImageChange={handleImageChange} />
-            <button type="button" className="child_parent_button" onClick={handleSubmit}>Wyślij</button> 
+            <button type="button" className="image_sent" onClick={handleSubmit}>Wyślij</button>
             <ToastContainer />
+            <div style={{ marginBottom: '20px' }}></div>
         </div>
     );
 }
