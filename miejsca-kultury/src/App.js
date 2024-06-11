@@ -14,9 +14,6 @@ import NotLoggedNav from './components/userNotLogged/NotLoggedNav/NotLoggedNav';
 import ResetPassword from './components/userNotLogged/ResetPassword/resetPassword';
 import ForgotPassword from './components/userNotLogged/ForgotPassword/forgotPassword';
 import ConfirmAccount from './components/userNotLogged/ConfirmAccount/ConfirmAccount';
-import DragAndDrop from './components/userNotLogged/ImageSystem/AddImage';
-import LocationFunction from './components/userNotLogged/ImageSystem/Location';
-import TextFieldSection from './components/userNotLogged/ImageSystem/Comment';
 import ImageSystem from './components/userNotLogged/ImageSystem/ImageAddingSystem';
 import "./App.css";
 
@@ -40,9 +37,6 @@ const router = createBrowserRouter([
       { path: "/forgot-password", element: <ForgotPassword/> },
       { path: "/reset-password", element: <ResetPassword/> },
       { path: "/confirm-account", element: <ConfirmAccount/> },
-      { path: "/image-system-drop", element: <DragAndDrop/> },
-      { path: "/image-system-location", element: <LocationFunction/> },
-      { path: "/image-system-text-field", element: <TextFieldSection/> },
       { path: "/image-system", element: <ImageSystem/>}
     ],
  },
