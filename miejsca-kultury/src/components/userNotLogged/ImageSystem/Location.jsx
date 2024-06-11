@@ -4,12 +4,14 @@ import { gsap } from 'gsap';
 
 export default function LocationFunction({ onLocationChange }) {
     const { isLoaded } = useLoadScript({
-        googleMapsApiKey: 'AIzaSyDf7a6DZJFBFi1P77NENRRCgd6vIiqA6Ug',
-        mapIds: ['94abaf43d87181fa']
+        googleMapsApiKey: process.env.REACT_APP_API_KEY,
+        mapIds: [process.env.REACT_APP_MAP_ID]
     });
 
     const [markerPosition, setMarkerPosition] = useState({ lat: 50.041187, lng: 21.999121 });
     const locationInputRef = useRef(null);
+
+    console.log(process.env.REACT_APP_API_KEY)
 
     useEffect(() => {
         if (locationInputRef.current) {
@@ -47,7 +49,7 @@ export default function LocationFunction({ onLocationChange }) {
                 center={markerPosition}
                 onClick={onMapClick}
                 options={{
-                    mapId: '94abaf43d87181fa',
+                    mapId: process.env.REACT_APP_MAP_ID,
                     disableDefaultUI: true,
                     gestureHandling: 'greedy'
                 }}
@@ -55,7 +57,7 @@ export default function LocationFunction({ onLocationChange }) {
             </GoogleMap>
             <input 
                 type="text" 
-                value={`φ: ${markerPosition.lat.toFixed(6)} λ: ${markerPosition.lng.toFixed(6)}`} 
+                value={`φ: ${markerPosition.lat.toFixed(6)} λ: ${markerPosition.lng.toFixed(6)}`}
                 readOnly 
                 className="location-input"
                 ref={locationInputRef}
