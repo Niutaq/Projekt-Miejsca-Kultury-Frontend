@@ -2,12 +2,11 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { useSession } from "../../SessionContext";
 
 const LoginPage = () => {
   const [email, emailUpdate] = useState("");
   const [password, passwordUpdate] = useState("");
-  const { updateSession } = useSession();
+
   const usenavigate = useNavigate();
 
   const validate = () => {
@@ -39,13 +38,14 @@ const LoginPage = () => {
         const message = JSON.stringify(data);
         const messageToDisplay = JSON.parse(message);
         if (response.ok) {
-          updateSession({
-            name: data.name,
-            surname: data.surname,
-            avatar: data.avatarUrl,
-            token: data.accessToken,
-          });
+          localStorage.setItem("token", data.accessToken);
+          localStorage.setItem("name", data.name);
+          localStorage.setItem("surname", data.surname);
+          localStorage.setItem("avatar", data.avatarUrl);
+          localStorage.setItem("role", data.roles);
+
           usenavigate("/");
+          window.location.reload();
         } else {
           toast.error(`${messageToDisplay.title}`);
           Object.entries(data.errors).forEach(([key, value]) => {

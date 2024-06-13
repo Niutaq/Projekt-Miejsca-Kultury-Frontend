@@ -1,5 +1,5 @@
-import React from 'react';
-import { RouterProvider, createBrowserRouter } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { RouterProvider, createBrowserRouter, Navigate } from 'react-router-dom';
 import MainPage from "./components/userNotLogged/MainPage/MainPage";
 import LoginPage from "./components/userNotLogged/LoginPage/LoginPage";
 import RegisterPage from "./components/userNotLogged/RegisterPage/RegisterPage";
@@ -18,17 +18,31 @@ import ConfirmAccount from './components/userNotLogged/ConfirmAccount/ConfirmAcc
 import LoggedNav from './components/userLogged/LoggedNav/LoggedNav';
 import AdminPanel from './components/adminLogged/AdminPanel/AdminPanel';
 import "./App.css";
-import { useSession } from './components/SessionContext';
 import UserPanel from './components/userLogged/UserPanel/UserPanel';
 
 const App = () => {
-  const { session } = useSession();
-  
+  const [isLoggedIn, setIsLoggedIn] = useState(!!localStorage.getItem("token"));
 
+  useEffect(() => {
+    setIsLoggedIn(!!localStorage.getItem("token"));
+  }, []);
+
+  const PrivateRoute = ({ element, roles }) => {
+    const rolesString = localStorage.getItem("role");
+    const userRoles = rolesString ? rolesString.split(',') : [];
+
+    if (roles.includes("Admin") && !userRoles.includes("Admin")) {
+      return <Navigate to="/user-panel" />;
+    }
+    if (roles.includes("User") && userRoles.includes("Admin")) {
+      return <Navigate to="/admin-panel" />;
+    }
+    return element;
+  };
 
   const router = createBrowserRouter([
     {
-      element: session.token ? <LoggedNav /> : <NotLoggedNav />,
+      element: isLoggedIn ? <LoggedNav /> : <NotLoggedNav />,
       children: [
         { path: "/", element: <MainPage /> },
         { path: "/login", element: <LoginPage /> },
@@ -44,9 +58,8 @@ const App = () => {
         { path: "/forgot-password", element: <ForgotPassword /> },
         { path: "/reset-password", element: <ResetPassword /> },
         { path: "/confirm-account", element: <ConfirmAccount /> },
-        //{ path: "/admin-panel", element: session.isAdmin ? <AdminPanel /> : <MainPage /> },
-        //{ path: "/user-panel", element: !session.isAdmin ? <UserPanel /> : <MainPage /> }
-        { path: "/admin-panel", element: <AdminPanel /> },
+        { path: "/admin-panel", element: <PrivateRoute element={<AdminPanel />} roles={['Admin']} /> },
+        { path: "/user-panel", element: <PrivateRoute element={<UserPanel />} roles={['User']} /> },
       ],
     },
   ]);
