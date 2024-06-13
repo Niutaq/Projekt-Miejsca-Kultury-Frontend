@@ -36,14 +36,18 @@ export default function LoggedNav() {
                   <Link
                     to="/admin-panel"
                     className="link-light link-underline-opacity-0 d-flex align-items-center"
-                  ></Link>
+                  >
+                    Admin Panel
+                  </Link>
                 </Nav.Item>
               ) : (
                 <Nav.Item>
                   <Link
                     to="/user-panel"
                     className="link-light link-underline-opacity-0 d-flex align-items-center"
-                  ></Link>
+                  >
+                    User Panel
+                  </Link>
                 </Nav.Item>
               )}
               <Nav.Item>

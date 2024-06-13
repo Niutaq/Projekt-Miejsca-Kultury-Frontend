@@ -28,15 +28,22 @@ const App = () => {
   }, []);
 
   const PrivateRoute = ({ element, roles }) => {
+    const token = localStorage.getItem("token");
     const rolesString = localStorage.getItem("role");
     const userRoles = rolesString ? rolesString.split(',') : [];
+
+    if (!token) {
+      return <Navigate to="/login" />;
+    }
 
     if (roles.includes("Admin") && !userRoles.includes("Admin")) {
       return <Navigate to="/user-panel" />;
     }
+
     if (roles.includes("User") && userRoles.includes("Admin")) {
       return <Navigate to="/admin-panel" />;
     }
+
     return element;
   };
 
@@ -59,7 +66,7 @@ const App = () => {
         { path: "/reset-password", element: <ResetPassword /> },
         { path: "/confirm-account", element: <ConfirmAccount /> },
         { path: "/admin-panel", element: <PrivateRoute element={<AdminPanel />} roles={['Admin']} /> },
-        { path: "/user-panel", element: <PrivateRoute element={<UserPanel />} roles={['User']} /> },
+        { path: "/user-panel", element: <PrivateRoute element={<UserPanel />} roles={['User', 'Admin']} /> },
       ],
     },
   ]);
