@@ -17,6 +17,7 @@ import ConfirmAccount from './components/userNotLogged/ConfirmAccount/ConfirmAcc
 import ImageSystem from './components/userNotLogged/ImageSystem/ImageAddingSystem';
 import AddAnnounces from './components/adminLogged/AddAnnounces/AddAnnounces';
 import "./App.css";
+import Announces from './components/userNotLogged/Announces/Announces';
 
 
 const router = createBrowserRouter([
@@ -39,7 +40,8 @@ const router = createBrowserRouter([
       { path: "/reset-password", element: <ResetPassword/> },
       { path: "/confirm-account", element: <ConfirmAccount/> },
       { path: "/image-system", element: <ImageSystem/>},
-      {path: "/announces", element: <AddAnnounces/>}
+      {path: "/announces-add", element: <AddAnnounces/>},
+      {path: "/announces", element: <Announces/>}
     ],
  },
 ]);
