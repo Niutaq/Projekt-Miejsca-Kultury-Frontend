@@ -55,10 +55,7 @@ function UserPanel() {
               });
             }
           } else {
-            const successMessage = data.message;
-            //session.avatar = data.message;
             localStorage.setItem("avatar", data.message);
-            toast.success(successMessage);
 
             handleClose();
             window.location.reload();
@@ -74,53 +71,67 @@ function UserPanel() {
     reader.readAsDataURL(file);
   };
   return (
-    <Container className="mt-5">
-      <Row className="align-items-center">
-        <Col sm={8}>
-          <BootstrapImage
-            src={localStorage.getItem("avatar")}
-            roundedCircle
-            key={localStorage.getItem("avatar")}
-          />
-        </Col>
-        <Col
-          sm={4}
-          className="d-flex align-items-center"
-          style={{ fontSize: "45px", color: "#f8f9fa", fontWeight: "bold" }}
-        >
-          Panel Użytkownika: {localStorage.getItem("name")}{" "}
-          {localStorage.getItem("surname")}
-        </Col>
-      </Row>
-      <Row className="mt-5">
-        <Col sm className="d-flex align-items-center justify-content-center">
-          <Button variant="primary" onClick={() => handleShow("changePhoto")}>
-            Zmień zdjęcie
-          </Button>
-
-          <Modal
-            show={activeModal === "changePhoto"}
-            onHide={handleClose}
-            centered
-          >
-            <Modal.Body>
-              <input
-                type="file"
-                accept="image/*"
-                onChange={handleImageUpload}
-              />
-            </Modal.Body>
-            <Modal.Footer>
-              <Button variant="secondary" onClick={handleClose}>
-                Zamknij
-              </Button>
-              {localStorage.getItem("avatar") && (
-                <Button variant="danger"> Usuń zdjęcie</Button>
-              )}
-            </Modal.Footer>
-          </Modal>
-        </Col>
-      </Row>
+    <Container className="mt-5 d-flex justify-content-center">
+      <div
+        style={{
+          border: "2px solid #ccc",
+          padding: "20px",
+          borderRadius: "10px",
+          backgroundColor: "#f8f9fa",
+          maxWidth: "1000px",
+          width: "100%",
+        }}
+      >
+        <Row className="justify-content-center align-items-center mb-4">
+          <Col sm={12} className="text-center">
+            <BootstrapImage
+              src={localStorage.getItem("avatar")}
+              roundedCircle
+              key={localStorage.getItem("avatar")}
+              style={{ width: "200px", height: "200px" }}
+            />
+          </Col>
+          <Col sm={12} className="text-center mt-3">
+            <h1
+              style={{ fontSize: "45px", color: "black", fontWeight: "bold" }}
+            >
+              {localStorage.getItem("name")} {localStorage.getItem("surname")}
+            </h1>
+          </Col>
+        </Row>
+        <Row className="justify-content-center">
+          <Col sm={6} className="d-flex justify-content-center mb-3">
+            <Button
+              variant="primary"
+              style={{ width: "300px", height: "50px" }}
+              onClick={() => handleShow("changePhoto")}
+            >
+              Zmień zdjęcie
+            </Button>
+            <Modal
+              show={activeModal === "changePhoto"}
+              onHide={handleClose}
+              centered
+            >
+              <Modal.Body>
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={handleImageUpload}
+                />
+              </Modal.Body>
+              <Modal.Footer>
+                <Button variant="secondary" onClick={handleClose}>
+                  Zamknij
+                </Button>
+                {localStorage.getItem("avatar") && (
+                  <Button variant="danger"> Usuń zdjęcie</Button>
+                )}
+              </Modal.Footer>
+            </Modal>
+          </Col>
+        </Row>
+      </div>
       <ToastContainer />
     </Container>
   );

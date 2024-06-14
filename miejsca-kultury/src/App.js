@@ -19,6 +19,8 @@ import LoggedNav from './components/userLogged/LoggedNav/LoggedNav';
 import AdminPanel from './components/adminLogged/AdminPanel/AdminPanel';
 import "./App.css";
 import UserPanel from './components/userLogged/UserPanel/UserPanel';
+import EventsPage from './components/userNotLogged/EventsPage/EventsPage';
+import AddEvent from './components/adminLogged/addEvent/addEvent';
 
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(!!localStorage.getItem("token"));
@@ -65,8 +67,10 @@ const App = () => {
         { path: "/forgot-password", element: <ForgotPassword /> },
         { path: "/reset-password", element: <ResetPassword /> },
         { path: "/confirm-account", element: <ConfirmAccount /> },
+        { path: "/add-event", element: <PrivateRoute element={<AddEvent />} roles={['Admin']} /> },
         { path: "/admin-panel", element: <PrivateRoute element={<AdminPanel />} roles={['Admin']} /> },
-        { path: "/user-panel", element: <PrivateRoute element={<UserPanel />} roles={['User', 'Admin']} /> },
+        { path: "/user-panel", element: <PrivateRoute element={<UserPanel />} roles={['User']} /> },
+        { path: "/events", element: <EventsPage /> },
       ],
     },
   ]);

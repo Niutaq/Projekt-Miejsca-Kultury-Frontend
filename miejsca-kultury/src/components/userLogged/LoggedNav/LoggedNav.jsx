@@ -1,10 +1,18 @@
+import React from "react";
 import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
+import Button from "react-bootstrap/Button";
 import { Outlet, Link, useNavigate } from "react-router-dom";
 
 export default function LoggedNav() {
   const navigate = useNavigate();
+
+  const containerStyle = {
+    maxWidth: "1200px",
+    marginLeft: "auto",
+    marginRight: "auto",
+  };
 
   const handleLogout = () => {
     localStorage.setItem("token", "");
@@ -21,8 +29,8 @@ export default function LoggedNav() {
 
   return (
     <>
-      <Navbar bg="dark" data-bs-theme="dark" className="fixed top">
-        <Container>
+      <Navbar bg="dark" data-bs-theme="dark" className="fixed-top">
+        <Container style={containerStyle}>
           <Navbar.Brand>
             <Link className="link-light link-underline-opacity-0" to={"/"}>
               Miejsca Kultury
@@ -31,25 +39,6 @@ export default function LoggedNav() {
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="ms-auto d-flex align-items-center">
-              {userRoles.includes("Admin") ? (
-                <Nav.Item>
-                  <Link
-                    to="/admin-panel"
-                    className="link-light link-underline-opacity-0 d-flex align-items-center"
-                  >
-                    Admin Panel
-                  </Link>
-                </Nav.Item>
-              ) : (
-                <Nav.Item>
-                  <Link
-                    to="/user-panel"
-                    className="link-light link-underline-opacity-0 d-flex align-items-center"
-                  >
-                    User Panel
-                  </Link>
-                </Nav.Item>
-              )}
               <Nav.Item>
                 <Link
                   to={
@@ -83,7 +72,54 @@ export default function LoggedNav() {
           </Navbar.Collapse>
         </Container>
       </Navbar>
-      <Outlet />
+      <div className="d-flex mt-5">
+        <div
+          className="bg-light border"
+          style={{
+            width: "200px",
+            height: "100vh",
+            position: "fixed",
+            top: "56px",
+          }}
+        >
+          <Nav className="flex-column p-2">
+            <Button
+              variant="outline-dark"
+              className="mb-2"
+              onClick={() => navigate("/")}
+            >
+              Strona główna
+            </Button>
+            <Button
+              variant="outline-dark"
+              className="mb-2"
+              onClick={() => navigate("/events")}
+            >
+              O wydarzeniach
+            </Button>
+            {userRoles.includes("Admin") && (
+              <>
+                <Button
+                  variant="outline-dark"
+                  className="mb-2"
+                  onClick={() => navigate("/add-event")}
+                >
+                  Dodaj wydarzenie
+                </Button>
+                <Button
+                  variant="outline-dark"
+                  onClick={() => navigate("/add-post")}
+                >
+                  Dodaj post
+                </Button>
+              </>
+            )}
+          </Nav>
+        </div>
+        <div style={{ marginLeft: "200px", width: "100%" }}>
+          <Outlet />
+        </div>
+      </div>
     </>
   );
 }
