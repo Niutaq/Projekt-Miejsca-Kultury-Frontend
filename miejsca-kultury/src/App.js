@@ -17,6 +17,7 @@ import ForgotPassword from './components/userNotLogged/ForgotPassword/forgotPass
 import ConfirmAccount from './components/userNotLogged/ConfirmAccount/ConfirmAccount';
 import LoggedNav from './components/userLogged/LoggedNav/LoggedNav';
 import AdminPanel from './components/adminLogged/AdminPanel/AdminPanel';
+import ImageSystem from './components/userNotLogged/ImageSystem/ImageAddingSystem';
 import "./App.css";
 import UserPanel from './components/userLogged/UserPanel/UserPanel';
 import EventsPage from './components/userNotLogged/EventsPage/EventsPage';
