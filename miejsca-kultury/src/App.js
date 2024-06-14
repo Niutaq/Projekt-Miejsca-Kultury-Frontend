@@ -21,6 +21,7 @@ import "./App.css";
 import UserPanel from './components/userLogged/UserPanel/UserPanel';
 import EventsPage from './components/userNotLogged/EventsPage/EventsPage';
 import AddEvent from './components/adminLogged/addEvent/addEvent';
+import AddPost from './components/adminLogged/addPost/addPost';
 
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(!!localStorage.getItem("token"));
@@ -68,6 +69,7 @@ const App = () => {
         { path: "/reset-password", element: <ResetPassword /> },
         { path: "/confirm-account", element: <ConfirmAccount /> },
         { path: "/add-event", element: <PrivateRoute element={<AddEvent />} roles={['Admin']} /> },
+        { path: "/add-post", element: <PrivateRoute element={<AddPost />} roles={['Admin']} /> },
         { path: "/admin-panel", element: <PrivateRoute element={<AdminPanel />} roles={['Admin']} /> },
         { path: "/user-panel", element: <PrivateRoute element={<UserPanel />} roles={['User']} /> },
         { path: "/events", element: <EventsPage /> },
