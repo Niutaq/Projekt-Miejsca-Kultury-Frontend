@@ -18,11 +18,14 @@ import ConfirmAccount from './components/userNotLogged/ConfirmAccount/ConfirmAcc
 import LoggedNav from './components/userLogged/LoggedNav/LoggedNav';
 import AdminPanel from './components/adminLogged/AdminPanel/AdminPanel';
 import ImageSystem from './components/userNotLogged/ImageSystem/ImageAddingSystem';
+import AddAnnounces from './components/adminLogged/AddAnnounces/AddAnnounces';
 import "./App.css";
+import Announces from './components/userNotLogged/Announces/Announces';
 import UserPanel from './components/userLogged/UserPanel/UserPanel';
 import EventsPage from './components/userNotLogged/EventsPage/EventsPage';
 import AddEvent from './components/adminLogged/addEvent/addEvent';
 import AddPost from './components/adminLogged/addPost/addPost';
+
 
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(!!localStorage.getItem("token"));
