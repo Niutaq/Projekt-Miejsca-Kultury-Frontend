@@ -15,47 +15,43 @@ const LoginPage = () => {
       result = false;
       toast.warning("Proszę wpisać email");
     }
+    
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        let logobj = { email, password };
+        if (validate()) {
+            try {
+                const response = await fetch('http://localhost:5000/api/sign-in', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(logobj)
+                });
 
+                const data = await response.json();
+                const message = JSON.stringify(data)
+                const messageToDisplay = JSON.parse(message)
+                if (response.ok) {
+                    localStorage.setItem('token',data.accessToken);
+                    localStorage.setItem('name',data.name);
+                    localStorage.setItem('surname',data.surname);
+                    localStorage.setItem('avatar',data.avatarUrl);
+                    localStorage.setItem("role", data.roles);
+                    usenavigate('/welcomepage')
+                } else {
+                    toast.error(`${messageToDisplay.title}`);
+                    Object.entries(data.errors).forEach(([key, value]) => {
+                        toast.error(value.join(', '));
+                });
+                }
+            } catch (error) {
+                console.error("Błąd:",error.message)
+            }
+        }
     if (password === "" || password === null) {
       result = false;
       toast.warning("Proszę wpisać hasło");
     }
     return result;
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    let logobj = { email, password };
-    if (validate()) {
-      try {
-        const response = await fetch("http://localhost:5000/api/sign-in", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(logobj),
-        });
-
-        const data = await response.json();
-        const message = JSON.stringify(data);
-        const messageToDisplay = JSON.parse(message);
-        if (response.ok) {
-          localStorage.setItem("token", data.accessToken);
-          localStorage.setItem("name", data.name);
-          localStorage.setItem("surname", data.surname);
-          localStorage.setItem("avatar", data.avatarUrl);
-          localStorage.setItem("role", data.roles);
-
-          usenavigate("/");
-          window.location.reload();
-        } else {
-          toast.error(`${messageToDisplay.title}`);
-          Object.entries(data.errors).forEach(([key, value]) => {
-            toast.error(value.join(", "));
-          });
-        }
-      } catch (error) {
-        console.error("Błąd:", error.message);
-      }
-    }
   };
 
   return (

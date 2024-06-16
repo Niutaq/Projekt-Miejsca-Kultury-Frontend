@@ -18,6 +18,7 @@ import ConfirmAccount from './components/userNotLogged/ConfirmAccount/ConfirmAcc
 import LoggedNav from './components/userLogged/LoggedNav/LoggedNav';
 import AdminPanel from './components/adminLogged/AdminPanel/AdminPanel';
 import ImageSystem from './components/userNotLogged/ImageSystem/ImageAddingSystem';
+import LocationFunction from './components/userNotLogged/ImageSystem/Location'
 import AddAnnounces from './components/adminLogged/AddAnnounces/AddAnnounces'
 import "./App.css";
 import Annouces from './components/userNotLogged/Announces/Announces'
@@ -75,6 +76,8 @@ const App = () => {
         { path: "/admin-panel", element: <PrivateRoute element={<AdminPanel />} roles={['Admin']} /> },
         { path: "/user-panel", element: <PrivateRoute element={<UserPanel />} roles={['User']} /> },
         { path: "/events", element: <Annouces /> },
+        { path: "/image-system", element:  <PrivateRoute element={<ImageSystem/>} roles={['Admin']} /> },
+        { path: "/map", element: <LocationFunction/>}
       ],
     },
   ]);
