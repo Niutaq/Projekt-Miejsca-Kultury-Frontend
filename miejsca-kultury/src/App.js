@@ -18,12 +18,10 @@ import ConfirmAccount from './components/userNotLogged/ConfirmAccount/ConfirmAcc
 import LoggedNav from './components/userLogged/LoggedNav/LoggedNav';
 import AdminPanel from './components/adminLogged/AdminPanel/AdminPanel';
 import ImageSystem from './components/userNotLogged/ImageSystem/ImageAddingSystem';
-import AddAnnounces from './components/adminLogged/AddAnnounces/AddAnnounces';
+import AddAnnounces from './components/adminLogged/AddAnnounces/AddAnnounces'
 import "./App.css";
-import Announces from './components/userNotLogged/Announces/Announces';
+import Annouces from './components/userNotLogged/Announces/Announces'
 import UserPanel from './components/userLogged/UserPanel/UserPanel';
-import EventsPage from './components/userNotLogged/EventsPage/EventsPage';
-import AddEvent from './components/adminLogged/addEvent/addEvent';
 import AddPost from './components/adminLogged/addPost/addPost';
 
 
@@ -72,11 +70,11 @@ const App = () => {
         { path: "/forgot-password", element: <ForgotPassword /> },
         { path: "/reset-password", element: <ResetPassword /> },
         { path: "/confirm-account", element: <ConfirmAccount /> },
-        { path: "/add-event", element: <PrivateRoute element={<AddEvent />} roles={['Admin']} /> },
+        { path: "/add-event", element: <PrivateRoute element={<AddAnnounces />} roles={['Admin']} /> },
         { path: "/add-post", element: <PrivateRoute element={<AddPost />} roles={['Admin']} /> },
         { path: "/admin-panel", element: <PrivateRoute element={<AdminPanel />} roles={['Admin']} /> },
         { path: "/user-panel", element: <PrivateRoute element={<UserPanel />} roles={['User']} /> },
-        { path: "/events", element: <EventsPage /> },
+        { path: "/events", element: <Annouces /> },
       ],
     },
   ]);
