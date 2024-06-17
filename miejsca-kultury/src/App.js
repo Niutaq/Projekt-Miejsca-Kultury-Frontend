@@ -23,30 +23,40 @@ import AddAnnounces from './components/adminLogged/AddAnnounces/AddAnnounces'
 import "./App.css";
 import Annouces from './components/userNotLogged/Announces/Announces'
 import UserPanel from './components/userLogged/UserPanel/UserPanel';
-import AddPost from './components/adminLogged/addPost/addPost';
+
 
 
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(!!localStorage.getItem("token"));
+  const [userRoles, setUserRoles] = useState(localStorage.getItem("role") ? localStorage.getItem("role").split(',') : []);
 
   useEffect(() => {
-    setIsLoggedIn(!!localStorage.getItem("token"));
+    const handleStorageChange = () => {
+      setIsLoggedIn(!!localStorage.getItem("token"));
+      setUserRoles(localStorage.getItem("role") ? localStorage.getItem("role").split(',') : []);
+    };
+
+    window.addEventListener("storage", handleStorageChange);
+
+    return () => {
+      window.removeEventListener("storage", handleStorageChange);
+    };
   }, []);
 
   const PrivateRoute = ({ element, roles }) => {
     const token = localStorage.getItem("token");
     const rolesString = localStorage.getItem("role");
-    const userRoles = rolesString ? rolesString.split(',') : [];
+    const currentUserRoles = rolesString ? rolesString.split(',') : [];
 
     if (!token) {
       return <Navigate to="/login" />;
     }
 
-    if (roles.includes("Admin") && !userRoles.includes("Admin")) {
+    if (roles.includes("Admin") && !currentUserRoles.includes("Admin")) {
       return <Navigate to="/user-panel" />;
     }
 
-    if (roles.includes("User") && userRoles.includes("Admin")) {
+    if (roles.includes("User") && currentUserRoles.includes("Admin")) {
       return <Navigate to="/admin-panel" />;
     }
 
@@ -72,12 +82,11 @@ const App = () => {
         { path: "/reset-password", element: <ResetPassword /> },
         { path: "/confirm-account", element: <ConfirmAccount /> },
         { path: "/add-event", element: <PrivateRoute element={<AddAnnounces />} roles={['Admin']} /> },
-        { path: "/add-post", element: <PrivateRoute element={<AddPost />} roles={['Admin']} /> },
+        { path: "/add-post", element: <PrivateRoute element={<ImageSystem />} roles={['Admin']} /> },
         { path: "/admin-panel", element: <PrivateRoute element={<AdminPanel />} roles={['Admin']} /> },
         { path: "/user-panel", element: <PrivateRoute element={<UserPanel />} roles={['User']} /> },
         { path: "/events", element: <Annouces /> },
-        { path: "/image-system", element:  <PrivateRoute element={<ImageSystem/>} roles={['Admin']} /> },
-        { path: "/map", element: <LocationFunction/>}
+        { path: "/map", element: <LocationFunction /> }
       ],
     },
   ]);

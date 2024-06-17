@@ -1,6 +1,6 @@
 import React from "react";
 
-const EventCard = ({ localization, date, dataDescription, description }) => (
+const AnnounceCart= ({ localization, date, dataDescription, description }) => (
   <div className="card mb-3">
     <div className="card-body">
       <h5 className="card-title">{localization}</h5>
@@ -13,4 +13,4 @@ const EventCard = ({ localization, date, dataDescription, description }) => (
   </div>
 );
 
-export default EventCard;
+export default AnnounceCart;

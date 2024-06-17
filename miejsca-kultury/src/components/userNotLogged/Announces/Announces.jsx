@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
-import EventCard from "./AnnounceCart";
+import AnnounceCart from "./AnnounceCart"
 
-const App = () => {
+const Annouces = () => {
   const [events, setEvents] = useState([]);
   const [filter, setFilter] = useState("today");
   const [isLoading, setIsLoading] = useState(false);
@@ -77,7 +77,7 @@ const App = () => {
       ) : (
         <div>
           {events.map((event) => (
-            <EventCard
+            <AnnounceCart
               key={event.id}
               localization={event.localization}
               date={event.date}
@@ -91,4 +91,4 @@ const App = () => {
   );
 };
 
-export default App;
+export default Annouces;
