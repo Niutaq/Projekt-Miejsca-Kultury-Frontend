@@ -164,9 +164,6 @@ function AdminPanel() {
                 <Button variant="secondary" onClick={handleClose}>
                   Zamknij
                 </Button>
-                {localStorage.getItem("avatar") && (
-                  <Button variant="danger"> Usuń zdjęcie</Button>
-                )}
               </Modal.Footer>
             </Modal>
           </Col>

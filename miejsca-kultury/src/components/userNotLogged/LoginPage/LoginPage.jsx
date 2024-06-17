@@ -42,7 +42,8 @@ const LoginPage = () => {
           localStorage.setItem('surname', data.surname);
           localStorage.setItem('avatar', data.avatarUrl);
           localStorage.setItem("role", data.roles);
-          usenavigate('/welcomepage');
+          usenavigate('/');
+          window.location.reload();
         } else {
           toast.error(`${messageToDisplay.title}`);
           Object.entries(data.errors).forEach(([key, value]) => {
