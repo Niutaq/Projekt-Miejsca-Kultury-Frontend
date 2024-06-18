@@ -38,7 +38,7 @@ const ConfirmAccount = () => {
     };
 
     try {
-      const response = await fetch('http://kni.prz.edu.pl:47442/api/confirm-account', {
+      const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/confirm-account`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

@@ -23,14 +23,14 @@ function CentraNaukowe() {
   const [averageRating,setAverageRating] = useState();
   const [ratingPostId, setRatingPostId] = useState(null);
   const [editingRatingId, setEditingRatingId] = useState(null);
-  const [editedRating, setEditedRating] = useState(null);
+  const [newRating, setEditedRating] = useState(null);
 
   const rolesString = localStorage.getItem("role");
   const userRoles = rolesString ? rolesString.split(",") : [];
 
   const fetchPosts = async () => {
     try {
-      const response = await fetch("http://kni.prz.edu.pl:47442/api/post/2");
+      const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/post/2`);
       const res = await response.json();
       const message = JSON.stringify(res);
       const messageToDisplay = JSON.parse(message);
@@ -54,7 +54,7 @@ function CentraNaukowe() {
     try {
       const token = localStorage.getItem("token");
       const response = await fetch(
-        "http://kni.prz.edu.pl:47442/api/post/delete-posts",
+        `${process.env.REACT_APP_API_BASE_URL}/api/post/delete-posts`,
         {
           method: "DELETE",
           headers: {
@@ -131,7 +131,7 @@ function CentraNaukowe() {
     try {
       //let logobj = { postId, name, newLocalizationX, newLocalizationY, Description, Category }
       console.log(data);
-      const response = await fetch("http://kni.prz.edu.pl:47442/api/post/update-posts",
+      const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/post/update-posts`,
         {
           method: "PUT",
           headers: {
@@ -185,7 +185,7 @@ function CentraNaukowe() {
 
     try {
         console.log(data);
-        const response = await fetch('http://kni.prz.edu.pl:47442/api/rating/add-ratting', {
+        const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/rating/add-ratting`, {
             method: 'POST',
             headers: {
                 Authorization: `Bearer ${token}`,
@@ -214,7 +214,7 @@ function CentraNaukowe() {
 
 const fetchRating = async (placeId) => {
     try {
-      const response = await fetch(`http://kni.prz.edu.pl:47442/api/rating/${placeId}`);
+      const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/rating/${placeId}`);
       const res = await response.json();
       const message = JSON.stringify(res);
       const messageToDisplay = JSON.parse(message);
@@ -245,7 +245,7 @@ const fetchRating = async (placeId) => {
   const EditRating = async (placeId) => {
     let ValidationError = false;
 
-    if (!editedRating) {
+    if (!newRating) {
         toast.warning("Należy wybrać ocenę.");
         ValidationError = true;
     }
@@ -255,7 +255,7 @@ const fetchRating = async (placeId) => {
     }
     const data = {
         placeId,
-        editedRating,
+        newRating,
     };
 
     const token = localStorage.getItem('token');
@@ -263,7 +263,7 @@ const fetchRating = async (placeId) => {
 
     try {
         console.log(data);
-        const response = await fetch('http://kni.prz.edu.pl:47442/api/rating/update-ratting', {
+        const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/rating/update-ratting`, {
             method: 'PUT',
             headers: {
                 Authorization: `Bearer ${token}`,
@@ -437,7 +437,7 @@ const fetchRating = async (placeId) => {
                 <div>
                   <h3>Edytuj opinię</h3>
                   <select
-                    value={editedRating}
+                    value={newRating}
                     onChange={handleEditedRatingChange}
                     className="styled-select"
                     style={{ marginBottom: "10px" }}

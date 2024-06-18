@@ -27,7 +27,7 @@ const LoginPage = () => {
     let logobj = { email, password };
     if (validate()) {
       try {
-        const response = await fetch('http://kni.prz.edu.pl:47442/api/sign-in', {
+        const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/sign-in`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(logobj)

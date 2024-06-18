@@ -41,7 +41,7 @@ const ResetPassword = () => {
     };
 
     try {
-      const response = await fetch('http://kni.prz.edu.pl:47442/api/reset-password', {
+      const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/reset-password`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

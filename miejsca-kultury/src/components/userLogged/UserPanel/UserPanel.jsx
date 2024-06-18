@@ -34,7 +34,7 @@ function UserPanel() {
         try {
           const token = localStorage.getItem("token");
           const response = await fetch(
-            "http://kni.prz.edu.pl:47442/api/upload-profile-avatarImage",
+            `${process.env.REACT_APP_API_BASE_URL}/api/upload-profile-avatarImage`,
             {
               method: "PUT",
               headers: {

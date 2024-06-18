@@ -29,7 +29,7 @@ export default function AddAnnounces() {
     try {
       const token = localStorage.getItem("token");
       const response = await fetch(
-        "http://kni.prz.edu.pl:47442/api/announcement/add-announcement",
+        `${process.env.REACT_APP_API_BASE_URL}/api/announcement/add-announcement`,
         {
           method: "POST",
           headers: {
