@@ -89,7 +89,7 @@ export default function ImageSystem() {
             formData.append('description', Description);
             formData.append('Category', Category);
 
-            const response = await fetch('http://localhost:5000/api/post/add-posts', {
+            const response = await fetch('http://kni.prz.edu.pl:47442/api/post/add-posts', {
                 method: 'POST',
                 headers: {
                     'Authorization': `Bearer ${token}`

@@ -23,7 +23,7 @@ function AdminPanel() {
 
     try {
       const logobj = { email };
-      const response = await fetch("http://localhost:5000/api/add-admin-role", {
+      const response = await fetch("http://kni.prz.edu.pl:47442/api/add-admin-role", {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -72,7 +72,7 @@ function AdminPanel() {
         try {
           const token = localStorage.getItem("token");
           const response = await fetch(
-            "http://localhost:5000/api/upload-profile-avatarImage",
+            "http://kni.prz.edu.pl:47442/api/upload-profile-avatarImage",
             {
               method: "PUT",
               headers: {

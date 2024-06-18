@@ -59,7 +59,7 @@ const RegisterPage = () => {
         console.log(regObj);
         if (isValidate()) {
             try {
-                const response = await fetch('http://localhost:5000/api/register', {
+                const response = await fetch('http://kni.prz.edu.pl:47442/api/register', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(regObj)

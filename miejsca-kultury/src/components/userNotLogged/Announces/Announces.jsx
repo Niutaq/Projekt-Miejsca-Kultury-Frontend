@@ -17,7 +17,7 @@ const Annouces = () => {
     setIsLoading(true);
     try {
       const response = await fetch(
-        `http://localhost:5000/api/announcement/${state}`
+        `http://kni.prz.edu.pl:47442/api/announcement/${state}`
       );
       const data = await response.json();
       console.log(data); 

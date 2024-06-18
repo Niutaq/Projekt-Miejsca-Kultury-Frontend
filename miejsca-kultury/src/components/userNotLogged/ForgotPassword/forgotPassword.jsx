@@ -17,7 +17,7 @@ const ForgotPassword = () => {
     setMessage('');
     
     try {
-      const response = await fetch('http://localhost:5000/api/send-reset-password-request', {
+      const response = await fetch('http://kni.prz.edu.pl:47442/api/send-reset-password-request', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

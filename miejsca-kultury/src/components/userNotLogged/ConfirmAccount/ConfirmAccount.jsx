@@ -38,7 +38,7 @@ const ConfirmAccount = () => {
     };
 
     try {
-      const response = await fetch('http://localhost:5000/api/confirm-account', {
+      const response = await fetch('http://kni.prz.edu.pl:47442/api/confirm-account', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
