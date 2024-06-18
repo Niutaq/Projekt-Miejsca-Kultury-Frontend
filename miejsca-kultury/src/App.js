@@ -20,11 +20,10 @@ import AdminPanel from './components/adminLogged/AdminPanel/AdminPanel';
 import ImageSystem from './components/userNotLogged/ImageSystem/ImageAddingSystem';
 import LocationFunction from './components/userNotLogged/ImageSystem/Location'
 import AddAnnounces from './components/adminLogged/AddAnnounces/AddAnnounces'
-import "./App.css";
 import Annouces from './components/userNotLogged/Announces/Announces'
 import UserPanel from './components/userLogged/UserPanel/UserPanel';
-
-
+import ViewComment from './components/userNotLogged/CommentSection/viewComments';
+import "./App.css";
 
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(!!localStorage.getItem("token"));
@@ -86,7 +85,8 @@ const App = () => {
         { path: "/admin-panel", element: <PrivateRoute element={<AdminPanel />} roles={['Admin']} /> },
         { path: "/user-panel", element: <PrivateRoute element={<UserPanel />} roles={['User']} /> },
         { path: "/events", element: <Annouces /> },
-        { path: "/map", element: <LocationFunction /> }
+        { path: "/map", element: <LocationFunction /> },
+        { path: "/view-comment", element: <ViewComment /> }
       ],
     },
   ]);

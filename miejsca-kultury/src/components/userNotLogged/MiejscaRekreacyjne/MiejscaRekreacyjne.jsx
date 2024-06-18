@@ -235,7 +235,7 @@ const fetchRating = async (placeId) => {
 
   const handleEditRatingClick = (post) => {
     setEditingRatingId(post.id);
-    setEditedRating(post.rating); // Assuming you want to edit the rating, adjust if you have more fields
+    setEditedRating(post.rating);
   };
   
   const handleEditedRatingChange = (event) => {

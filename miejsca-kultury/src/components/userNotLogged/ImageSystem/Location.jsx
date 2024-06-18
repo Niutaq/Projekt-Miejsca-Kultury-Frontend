@@ -12,8 +12,6 @@ export default function LocationFunction({ onLocationChange }) {
     const [markerPosition, setMarkerPosition] = useState({ lat: 50.041187, lng: 21.999121 });
     const locationInputRef = useRef(null);
 
-    console.log(process.env.REACT_APP_API_KEY)
-
     useEffect(() => {
         if (locationInputRef.current) {
             gsap.to(locationInputRef.current, {
@@ -58,7 +56,7 @@ export default function LocationFunction({ onLocationChange }) {
             </GoogleMap>
             <input 
                 type="text" 
-                value={`φ: ${markerPosition.lat.toFixed(6)} λ: ${markerPosition.lng.toFixed(6)}`}
+                value={`φ: ${markerPosition.lat.toFixed(6)}     λ: ${markerPosition.lng.toFixed(6)}`}
                 readOnly 
                 className="location-input"
                 ref={locationInputRef}

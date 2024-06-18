@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import LocationFunction from "../ImageSystem/Location";
 import TextFieldSection from "../ImageSystem/Comment";
+import Comment from "../CommentSection/commentSection";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -20,7 +21,6 @@ function InstytucjeKulturalne() {
   });
   const [placeId, setPlace] = useState();
   const [rating,setRating] = useState();
-  const [averageRating,setAverageRating] = useState();
   const [ratingPostId, setRatingPostId] = useState(null);
   const [editingRatingId, setEditingRatingId] = useState(null);
   const [editedRating, setEditedRating] = useState(null);
@@ -34,6 +34,7 @@ function InstytucjeKulturalne() {
       const res = await response.json();
       const message = JSON.stringify(res);
       const messageToDisplay = JSON.parse(message);
+      setPlace(placeId);
 
       if (response.ok) {
         setPosts(res);
@@ -65,7 +66,7 @@ function InstytucjeKulturalne() {
         }
       );
 
-      const responseStatus = JSON.stringify(response.status);
+      const responseStatus = response.status;
       if (responseStatus === 401) {
         toast.error("Nie można wykonać takiej operacji");
       }
@@ -141,7 +142,7 @@ function InstytucjeKulturalne() {
           body: JSON.stringify(data),
         }
       );
-      const responseStatus = JSON.stringify(response.status);
+      const responseStatus = response.status;
       if (responseStatus === 401) {
         toast.error("Nie można wykonać takiej operacji");
       }
@@ -193,7 +194,7 @@ function InstytucjeKulturalne() {
             },
             body: JSON.stringify(data)
         });
-        const responseStatus = JSON.stringify(response.status);
+        const responseStatus = response.status;
         if(responseStatus === 401){
             toast.error('Nie można wykonać takiej operacji');
         }
@@ -235,7 +236,7 @@ const fetchRating = async (placeId) => {
 
   const handleEditRatingClick = (post) => {
     setEditingRatingId(post.id);
-    setEditedRating(post.rating); // Assuming you want to edit the rating, adjust if you have more fields
+    setEditedRating(post.rating);
   };
   
   const handleEditedRatingChange = (event) => {
@@ -271,7 +272,7 @@ const fetchRating = async (placeId) => {
             },
             body: JSON.stringify(data)
         });
-        const responseStatus = JSON.stringify(response.status);
+        const responseStatus = response.status;
         if(responseStatus === 401){
             toast.error('Nie można wykonać takiej operacji');
         }
@@ -533,6 +534,7 @@ const fetchRating = async (placeId) => {
                 >
                   Przeglądaj na Mapie
                 </Link>
+                <Comment postId={post.id} />
               </div>
             )}
           </div>
