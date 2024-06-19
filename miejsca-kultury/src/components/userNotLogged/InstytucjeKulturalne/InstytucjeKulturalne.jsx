@@ -6,7 +6,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Comment from "../CommentSection/commentSection";
 import ViewComments from "../CommentSection/viewComments";
-
+import LikeBtn from "../LikeBtn/LikeBtn";
 function InstytucjeKulturalne() {
   const [posts, setPosts] = useState(null);
   const [location, setLocation] = useState({ lat: null, lng: null });
@@ -23,12 +23,14 @@ function InstytucjeKulturalne() {
   const [placeId, setPlace] = useState();
   const [rating, setRating] = useState();
   const [averageRating, setAverageRating] = useState();
+
   const [ratingPostId, setRatingPostId] = useState(null);
   const [editingRatingId, setEditingRatingId] = useState(null);
   const [editedRating, setEditedRating] = useState(null);
-  const token = localStorage.getItem("token");
+
   const rolesString = localStorage.getItem("role");
   const userRoles = rolesString ? rolesString.split(",") : [];
+  const token = localStorage.getItem("token");
 
   const fetchPosts = async () => {
     try {
@@ -39,7 +41,7 @@ function InstytucjeKulturalne() {
       const message = JSON.stringify(res);
       const messageToDisplay = JSON.parse(message);
       setPlace(placeId);
-
+      console.log(message);
       if (response.ok) {
         setPosts(res);
         console.log(posts);
@@ -189,31 +191,33 @@ function InstytucjeKulturalne() {
     console.log(token);
 
     try {
-        console.log(data);
-        const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/rating/add-ratting`, {
-            method: 'POST',
-            headers: {
-                Authorization: `Bearer ${token}`,
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(data)
+      console.log(data);
+      const response = await fetch(
+        `${process.env.REACT_APP_API_BASE_URL}/api/rating/add-ratting`,
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(data),
+        }
+      );
+      const responseStatus = response.status;
+      if (responseStatus === 401) {
+        toast.error("Nie można wykonać takiej operacji");
+      }
+      const res = await response.json();
+      const message = JSON.stringify(res);
+      const messageToDisplay = JSON.parse(message);
+      if (response.ok) {
+        setPlace(posts.filter((post) => post.id !== placeId));
+        toast.success(`${messageToDisplay.message}`);
+        window.location.reload();
+      } else {
+        Object.entries(res.errors).forEach(([key, value]) => {
+          toast.error(value.join(", "));
         });
-        const responseStatus = response.status;
-        if(responseStatus === 401){
-            toast.error('Nie można wykonać takiej operacji');
-        }
-        const res = await response.json();
-        const message = JSON.stringify(res);
-        const messageToDisplay = JSON.parse(message);
-        if (response.ok) {
-            setPlace(posts.filter((post) => post.id !== placeId));
-            toast.success(`${messageToDisplay.message}`);
-            window.location.reload();
-        }
-        else{
-            Object.entries(res.errors).forEach(([key, value]) => {
-                toast.error(value.join(', '));
-            });
       }
     } catch (error) {}
   };
@@ -270,31 +274,33 @@ function InstytucjeKulturalne() {
     console.log(token);
 
     try {
-        console.log(data);
-        const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/rating/update-ratting`, {
-            method: 'PUT',
-            headers: {
-                Authorization: `Bearer ${token}`,
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(data)
+      console.log(data);
+      const response = await fetch(
+        `${process.env.REACT_APP_API_BASE_URL}/api/rating/update-ratting`,
+        {
+          method: "PUT",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(data),
+        }
+      );
+      const responseStatus = response.status;
+      if (responseStatus === 401) {
+        toast.error("Nie można wykonać takiej operacji");
+      }
+      const res = await response.json();
+      const message = JSON.stringify(res);
+      const messageToDisplay = JSON.parse(message);
+      if (response.ok) {
+        setPlace(posts.filter((post) => post.id !== placeId));
+        toast.success(`${messageToDisplay.message}`);
+        window.location.reload();
+      } else {
+        Object.entries(res.errors).forEach(([key, value]) => {
+          toast.error(value.join(", "));
         });
-        const responseStatus = response.status;
-        if(responseStatus === 401){
-            toast.error('Nie można wykonać takiej operacji');
-        }
-        const res = await response.json();
-        const message = JSON.stringify(res);
-        const messageToDisplay = JSON.parse(message);
-        if (response.ok) {
-            setPlace(posts.filter((post) => post.id !== placeId));
-            toast.success(`${messageToDisplay.message}`);
-            window.location.reload();
-        }
-        else{
-            Object.entries(res.errors).forEach(([key, value]) => {
-                toast.error(value.join(', '));
-            });
       }
     } catch (error) {}
   };
@@ -305,13 +311,11 @@ function InstytucjeKulturalne() {
   }, []);
 
   const handleCommentError = (error) => {
-    toast.error(`Błąd: ${error}`);
-    console.log(error);
+    toast.error(`Błąd: ${error.message}`);
   };
 
   const handleViewCommentError = (error) => {
-    toast.error(`Błąd: ${error}`);
-    console.log(error);
+    toast.error(`Błąd: ${error.message}`);
   };
 
   const handleCommentSuccess = (message) => {
@@ -407,8 +411,9 @@ function InstytucjeKulturalne() {
                 )}
 
                 <p style={{ margin: "0 0 10px", color: "#777" }}>
-                  Średnia cena: {post.averageRating}
+                  Średnia ocena: {post.averageRating}
                 </p>
+                <LikeBtn sumaLike={post.likesCount} id_like={post.id} />
                 {token && (
                   <>
                     <button
@@ -552,23 +557,17 @@ function InstytucjeKulturalne() {
                   </>
                 )}
                 <div style={{ marginBottom: "20px" }}></div>
-                <Link
-                  className="btn btn-primary"
-                  to={`/map`}
-                  style={{
-                    padding: "10px 15px",
-                    backgroundColor: "#2196F3",
-                    color: "#fff",
-                    border: "none",
-                    borderRadius: "3px",
-                    cursor: "pointer",
-                    marginLeft: "10px",
-                  }}
-                >
-                  Przeglądaj na Mapie
-                </Link>
-                <ViewComments postId={post.id} onError={handleViewCommentError} onSuccess={handleViewCommentSuccess} />
-                <Comment postId={post.id} onError={handleCommentError} onSuccess={handleCommentSuccess} />
+
+                <ViewComments
+                  postId={post.id}
+                  onError={handleViewCommentError}
+                  onSuccess={handleViewCommentSuccess}
+                />
+                <Comment
+                  postId={post.id}
+                  onError={handleCommentError}
+                  onSuccess={handleCommentSuccess}
+                />
               </div>
             )}
           </div>

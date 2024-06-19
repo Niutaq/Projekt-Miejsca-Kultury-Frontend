@@ -6,8 +6,8 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Comment from "../CommentSection/commentSection";
 import ViewComments from "../CommentSection/viewComments";
-
-function MiejscaRekracyjne() {
+import LikeBtn from "../LikeBtn/LikeBtn";
+function MiejscaRekreacyjne() {
   const [posts, setPosts] = useState(null);
   const [location, setLocation] = useState({ lat: null, lng: null });
   const [newTitle, setName] = useState("");
@@ -21,15 +21,16 @@ function MiejscaRekracyjne() {
     location: { lat: null, lng: null },
   });
   const [placeId, setPlace] = useState();
-
   const [rating, setRating] = useState();
   const [averageRating, setAverageRating] = useState();
+
   const [ratingPostId, setRatingPostId] = useState(null);
   const [editingRatingId, setEditingRatingId] = useState(null);
   const [editedRating, setEditedRating] = useState(null);
-  const token = localStorage.getItem("token");
+
   const rolesString = localStorage.getItem("role");
   const userRoles = rolesString ? rolesString.split(",") : [];
+  const token = localStorage.getItem("token");
 
   const fetchPosts = async () => {
     try {
@@ -40,7 +41,7 @@ function MiejscaRekracyjne() {
       const message = JSON.stringify(res);
       const messageToDisplay = JSON.parse(message);
       setPlace(placeId);
-
+      console.log(message);
       if (response.ok) {
         setPosts(res);
         console.log(posts);
@@ -190,31 +191,33 @@ function MiejscaRekracyjne() {
     console.log(token);
 
     try {
-        console.log(data);
-        const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/rating/add-ratting`, {
-            method: 'POST',
-            headers: {
-                Authorization: `Bearer ${token}`,
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(data)
+      console.log(data);
+      const response = await fetch(
+        `${process.env.REACT_APP_API_BASE_URL}/api/rating/add-ratting`,
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(data),
+        }
+      );
+      const responseStatus = response.status;
+      if (responseStatus === 401) {
+        toast.error("Nie można wykonać takiej operacji");
+      }
+      const res = await response.json();
+      const message = JSON.stringify(res);
+      const messageToDisplay = JSON.parse(message);
+      if (response.ok) {
+        setPlace(posts.filter((post) => post.id !== placeId));
+        toast.success(`${messageToDisplay.message}`);
+        window.location.reload();
+      } else {
+        Object.entries(res.errors).forEach(([key, value]) => {
+          toast.error(value.join(", "));
         });
-        const responseStatus = response.status;
-        if(responseStatus === 401){
-            toast.error('Nie można wykonać takiej operacji');
-        }
-        const res = await response.json();
-        const message = JSON.stringify(res);
-        const messageToDisplay = JSON.parse(message);
-        if (response.ok) {
-            setPlace(posts.filter((post) => post.id !== placeId));
-            toast.success(`${messageToDisplay.message}`);
-            window.location.reload();
-        }
-        else{
-            Object.entries(res.errors).forEach(([key, value]) => {
-                toast.error(value.join(', '));
-            });
       }
     } catch (error) {}
   };
@@ -271,31 +274,33 @@ function MiejscaRekracyjne() {
     console.log(token);
 
     try {
-        console.log(data);
-        const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/rating/update-ratting`, {
-            method: 'PUT',
-            headers: {
-                Authorization: `Bearer ${token}`,
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(data)
+      console.log(data);
+      const response = await fetch(
+        `${process.env.REACT_APP_API_BASE_URL}/api/rating/update-ratting`,
+        {
+          method: "PUT",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(data),
+        }
+      );
+      const responseStatus = response.status;
+      if (responseStatus === 401) {
+        toast.error("Nie można wykonać takiej operacji");
+      }
+      const res = await response.json();
+      const message = JSON.stringify(res);
+      const messageToDisplay = JSON.parse(message);
+      if (response.ok) {
+        setPlace(posts.filter((post) => post.id !== placeId));
+        toast.success(`${messageToDisplay.message}`);
+        window.location.reload();
+      } else {
+        Object.entries(res.errors).forEach(([key, value]) => {
+          toast.error(value.join(", "));
         });
-        const responseStatus = response.status;
-        if(responseStatus === 401){
-            toast.error('Nie można wykonać takiej operacji');
-        }
-        const res = await response.json();
-        const message = JSON.stringify(res);
-        const messageToDisplay = JSON.parse(message);
-        if (response.ok) {
-            setPlace(posts.filter((post) => post.id !== placeId));
-            toast.success(`${messageToDisplay.message}`);
-            window.location.reload();
-        }
-        else{
-            Object.entries(res.errors).forEach(([key, value]) => {
-                toast.error(value.join(', '));
-            });
       }
     } catch (error) {}
   };
@@ -332,7 +337,7 @@ function MiejscaRekracyjne() {
         alignItems: "center",
       }}
     >
-      <h2 style={{ color: "#333" }}>Miejsca Rekracyjne</h2>
+      <h2 style={{ color: "#333" }}>Miejsca Rekreacyjne</h2>
       {Array.isArray(posts) && posts.length > 0 ? (
         posts.map((post) => (
           <div
@@ -566,8 +571,16 @@ function MiejscaRekracyjne() {
                 >
                   Przeglądaj na Mapie
                 </Link>
-                <ViewComments postId={post.id} onError={handleViewCommentError} onSuccess={handleViewCommentSuccess} />
-                <Comment postId={post.id} onError={handleCommentError} onSuccess={handleCommentSuccess} />
+                <ViewComments
+                  postId={post.id}
+                  onError={handleViewCommentError}
+                  onSuccess={handleViewCommentSuccess}
+                />
+                <Comment
+                  postId={post.id}
+                  onError={handleCommentError}
+                  onSuccess={handleCommentSuccess}
+                />
               </div>
             )}
           </div>
@@ -578,6 +591,5 @@ function MiejscaRekracyjne() {
       <ToastContainer />
     </div>
   );
-};
-export default MiejscaRekracyjne;
-
+}
+export default MiejscaRekreacyjne;
