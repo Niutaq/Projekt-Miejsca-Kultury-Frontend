@@ -311,11 +311,11 @@ function InstytucjeKulturalne() {
   }, []);
 
   const handleCommentError = (error) => {
-    toast.error(`Błąd: ${error.message}`);
+    toast.error(`Błąd: ${error}`);
   };
 
   const handleViewCommentError = (error) => {
-    toast.error(`Błąd: ${error.message}`);
+    toast.error(`Błąd: ${error}`);
   };
 
   const handleCommentSuccess = (message) => {

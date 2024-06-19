@@ -311,16 +311,16 @@ function CentraKulturalne() {
   }, []);
 
   const handleCommentError = (error) => {
-    toast.error(`Błąd: ${error.message}`);
+    toast.error(`Błąd: ${error}`);
+    console.log(error);
   };
 
   const handleViewCommentError = (error) => {
-    toast.error(`Błąd: ${error.message}`);
+    toast.error(`Błąd: ${error}`);
   };
 
   const handleCommentSuccess = (message) => {
     toast.success(message);
-    console.log(message);
   };
 
   const handleViewCommentSuccess = (message) => {
