@@ -409,7 +409,7 @@ const CentraKulturalne = () => {
                     </button>
                   </>
                 )}
-                {ratingPostId === post.id && (
+                {token && ratingPostId === post.id && (
                   <div>
                     <select
                       value={rating}
@@ -446,7 +446,7 @@ const CentraKulturalne = () => {
                     <div style={{ marginBottom: "20px" }}></div>
                   </div>
                 )}
-                {editingRatingId === post.id ? (
+                {token && editingRatingId === post.id ? (
                   <div>
                     <h3>Edytuj opinię</h3>
                     <select
