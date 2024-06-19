@@ -26,7 +26,7 @@ function InstytucjeKulturalne() {
 
   const [ratingPostId, setRatingPostId] = useState(null);
   const [editingRatingId, setEditingRatingId] = useState(null);
-  const [editedRating, setEditedRating] = useState(null);
+  const [newRating, setEditedRating] = useState(null);
 
   const rolesString = localStorage.getItem("role");
   const userRoles = rolesString ? rolesString.split(",") : [];
@@ -257,7 +257,7 @@ function InstytucjeKulturalne() {
   const EditRating = async (placeId) => {
     let ValidationError = false;
 
-    if (!editedRating) {
+    if (!newRating) {
       toast.warning("Należy wybrać ocenę.");
       ValidationError = true;
     }
@@ -267,7 +267,7 @@ function InstytucjeKulturalne() {
     }
     const data = {
       placeId,
-      editedRating,
+      newRating,
     };
 
     const token = localStorage.getItem("token");
@@ -473,7 +473,7 @@ function InstytucjeKulturalne() {
                   <div>
                     <h3>Edytuj opinię</h3>
                     <select
-                      value={editedRating}
+                      value={newRating}
                       onChange={handleEditedRatingChange}
                       className="styled-select"
                       style={{ marginBottom: "10px" }}
