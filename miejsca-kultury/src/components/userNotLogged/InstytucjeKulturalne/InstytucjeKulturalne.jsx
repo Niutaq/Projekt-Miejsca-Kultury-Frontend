@@ -5,6 +5,7 @@ import TextFieldSection from "../ImageSystem/Comment";
 import Comment from "../CommentSection/commentSection";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import ViewComments from "../CommentSection/viewComments";
 
 function InstytucjeKulturalne() {
   const [posts, setPosts] = useState(null);
@@ -296,6 +297,23 @@ const fetchRating = async (placeId) => {
     fetchRating();
   }, []);
 
+  const handleCommentError = (error) => {
+    toast.error(`Błąd: ${error.message}`);
+  };
+
+  const handleViewCommentError = (error) => {
+    toast.error(`Błąd: ${error.message}`);
+  };
+
+  const handleCommentSuccess = (message) => {
+    toast.success(message);
+    console.log(message);
+  };
+
+  const handleViewCommentSuccess = (message) => {
+    toast.success(message);
+    console.log(message);
+  };
   return (
     <div
       style={{
@@ -534,7 +552,8 @@ const fetchRating = async (placeId) => {
                 >
                   Przeglądaj na Mapie
                 </Link>
-                <Comment postId={post.id} />
+                <ViewComments postId={post.id} onError={handleViewCommentError} onSuccess={handleViewCommentSuccess} />
+                <Comment postId={post.id} onError={handleCommentError} onSuccess={handleCommentSuccess} />
               </div>
             )}
           </div>
