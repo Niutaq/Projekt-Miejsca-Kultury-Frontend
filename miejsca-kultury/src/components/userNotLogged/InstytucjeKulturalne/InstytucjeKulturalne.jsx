@@ -4,6 +4,8 @@ import LocationFunction from "../ImageSystem/Location";
 import TextFieldSection from "../ImageSystem/Comment";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import Comment from "../CommentSection/commentSection";
+import ViewComments from "../CommentSection/viewComments";
 
 function InstytucjeKulturalne() {
   const [posts, setPosts] = useState(null);
@@ -36,6 +38,7 @@ function InstytucjeKulturalne() {
       const res = await response.json();
       const message = JSON.stringify(res);
       const messageToDisplay = JSON.parse(message);
+      setPlace(placeId);
 
       if (response.ok) {
         setPosts(res);
@@ -66,8 +69,7 @@ function InstytucjeKulturalne() {
           body: JSON.stringify(logobj),
         }
       );
-
-      const responseStatus = JSON.stringify(response.status);
+      const responseStatus = response.status;
       if (responseStatus === 401) {
         toast.error("Nie można wykonać takiej operacji");
       }
@@ -144,7 +146,7 @@ function InstytucjeKulturalne() {
           body: JSON.stringify(data),
         }
       );
-      const responseStatus = JSON.stringify(response.status);
+      const responseStatus = response.status;
       if (responseStatus === 401) {
         toast.error("Nie można wykonać takiej operacji");
       }
@@ -187,32 +189,31 @@ function InstytucjeKulturalne() {
     console.log(token);
 
     try {
-      console.log(data);
-      const response = await fetch(
-        `${process.env.REACT_APP_API_BASE_URL}/api/rating/add-ratting`,
-        {
-          method: "POST",
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(data),
-        }
-      );
-      const responseStatus = JSON.stringify(response.status);
-      if (responseStatus === 401) {
-        toast.error("Nie można wykonać takiej operacji");
-      }
-      const res = await response.json();
-      const message = JSON.stringify(res);
-      const messageToDisplay = JSON.parse(message);
-      if (response.ok) {
-        setPlace(posts.filter((post) => post.id !== placeId));
-        toast.success(`${messageToDisplay.message}`);
-      } else {
-        Object.entries(res.errors).forEach(([key, value]) => {
-          toast.error(value.join(", "));
+        console.log(data);
+        const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/rating/add-ratting`, {
+            method: 'POST',
+            headers: {
+                Authorization: `Bearer ${token}`,
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(data)
         });
+        const responseStatus = response.status;
+        if(responseStatus === 401){
+            toast.error('Nie można wykonać takiej operacji');
+        }
+        const res = await response.json();
+        const message = JSON.stringify(res);
+        const messageToDisplay = JSON.parse(message);
+        if (response.ok) {
+            setPlace(posts.filter((post) => post.id !== placeId));
+            toast.success(`${messageToDisplay.message}`);
+            window.location.reload();
+        }
+        else{
+            Object.entries(res.errors).forEach(([key, value]) => {
+                toast.error(value.join(', '));
+            });
       }
     } catch (error) {}
   };
@@ -242,7 +243,7 @@ function InstytucjeKulturalne() {
 
   const handleEditRatingClick = (post) => {
     setEditingRatingId(post.id);
-    setEditedRating(post.rating); // Assuming you want to edit the rating, adjust if you have more fields
+    setEditedRating(post.rating);
   };
 
   const handleEditedRatingChange = (event) => {
@@ -269,32 +270,31 @@ function InstytucjeKulturalne() {
     console.log(token);
 
     try {
-      console.log(data);
-      const response = await fetch(
-        `${process.env.REACT_APP_API_BASE_URL}/api/rating/update-ratting`,
-        {
-          method: "PUT",
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(data),
-        }
-      );
-      const responseStatus = JSON.stringify(response.status);
-      if (responseStatus === 401) {
-        toast.error("Nie można wykonać takiej operacji");
-      }
-      const res = await response.json();
-      const message = JSON.stringify(res);
-      const messageToDisplay = JSON.parse(message);
-      if (response.ok) {
-        setPlace(posts.filter((post) => post.id !== placeId));
-        toast.success(`${messageToDisplay.message}`);
-      } else {
-        Object.entries(res.errors).forEach(([key, value]) => {
-          toast.error(value.join(", "));
+        console.log(data);
+        const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/rating/update-ratting`, {
+            method: 'PUT',
+            headers: {
+                Authorization: `Bearer ${token}`,
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(data)
         });
+        const responseStatus = response.status;
+        if(responseStatus === 401){
+            toast.error('Nie można wykonać takiej operacji');
+        }
+        const res = await response.json();
+        const message = JSON.stringify(res);
+        const messageToDisplay = JSON.parse(message);
+        if (response.ok) {
+            setPlace(posts.filter((post) => post.id !== placeId));
+            toast.success(`${messageToDisplay.message}`);
+            window.location.reload();
+        }
+        else{
+            Object.entries(res.errors).forEach(([key, value]) => {
+                toast.error(value.join(', '));
+            });
       }
     } catch (error) {}
   };
@@ -304,6 +304,25 @@ function InstytucjeKulturalne() {
     fetchRating();
   }, []);
 
+  const handleCommentError = (error) => {
+    toast.error(`Błąd: ${error}`);
+    console.log(error);
+  };
+
+  const handleViewCommentError = (error) => {
+    toast.error(`Błąd: ${error}`);
+    console.log(error);
+  };
+
+  const handleCommentSuccess = (message) => {
+    toast.success(message);
+    console.log(message);
+  };
+
+  const handleViewCommentSuccess = (message) => {
+    toast.success(message);
+    console.log(message);
+  };
   return (
     <div
       style={{
@@ -548,6 +567,8 @@ function InstytucjeKulturalne() {
                 >
                   Przeglądaj na Mapie
                 </Link>
+                <ViewComments postId={post.id} onError={handleViewCommentError} onSuccess={handleViewCommentSuccess} />
+                <Comment postId={post.id} onError={handleCommentError} onSuccess={handleCommentSuccess} />
               </div>
             )}
           </div>

@@ -13,7 +13,7 @@ import MRR from "../../../components/ImagesMainPage/Miejsca Religijne.jpg";
 
 function MainPage() {
   const cardTextStyle = {
-    minHeight: "150px", // Ustaw minimalną wysokość dla tekstu w karcie
+    minHeight: "150px",
   };
 
   return (

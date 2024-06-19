@@ -4,8 +4,10 @@ import LocationFunction from "../ImageSystem/Location";
 import TextFieldSection from "../ImageSystem/Comment";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import Comment from "../CommentSection/commentSection";
+import ViewComments from "../CommentSection/viewComments";
 
-const CentraKulturalne = () => {
+function CentraKulturalne() {
   const [posts, setPosts] = useState(null);
   const [location, setLocation] = useState({ lat: null, lng: null });
   const [newTitle, setName] = useState("");
@@ -21,6 +23,7 @@ const CentraKulturalne = () => {
   const [placeId, setPlace] = useState();
   const [rating, setRating] = useState();
   const [averageRating, setAverageRating] = useState();
+
   const [ratingPostId, setRatingPostId] = useState(null);
   const [editingRatingId, setEditingRatingId] = useState(null);
   const [editedRating, setEditedRating] = useState(null);
@@ -37,6 +40,7 @@ const CentraKulturalne = () => {
       const res = await response.json();
       const message = JSON.stringify(res);
       const messageToDisplay = JSON.parse(message);
+      setPlace(placeId);
 
       if (response.ok) {
         setPosts(res);
@@ -67,8 +71,7 @@ const CentraKulturalne = () => {
           body: JSON.stringify(logobj),
         }
       );
-
-      const responseStatus = JSON.stringify(response.status);
+      const responseStatus = response.status;
       if (responseStatus === 401) {
         toast.error("Nie można wykonać takiej operacji");
       }
@@ -145,7 +148,7 @@ const CentraKulturalne = () => {
           body: JSON.stringify(data),
         }
       );
-      const responseStatus = JSON.stringify(response.status);
+      const responseStatus = response.status;
       if (responseStatus === 401) {
         toast.error("Nie można wykonać takiej operacji");
       }
@@ -188,32 +191,31 @@ const CentraKulturalne = () => {
     console.log(token);
 
     try {
-      console.log(data);
-      const response = await fetch(
-        `${process.env.REACT_APP_API_BASE_URL}/api/rating/add-ratting`,
-        {
-          method: "POST",
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(data),
-        }
-      );
-      const responseStatus = JSON.stringify(response.status);
-      if (responseStatus === 401) {
-        toast.error("Nie można wykonać takiej operacji");
-      }
-      const res = await response.json();
-      const message = JSON.stringify(res);
-      const messageToDisplay = JSON.parse(message);
-      if (response.ok) {
-        setPlace(posts.filter((post) => post.id !== placeId));
-        toast.success(`${messageToDisplay.message}`);
-      } else {
-        Object.entries(res.errors).forEach(([key, value]) => {
-          toast.error(value.join(", "));
+        console.log(data);
+        const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/rating/add-ratting`, {
+            method: 'POST',
+            headers: {
+                Authorization: `Bearer ${token}`,
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(data)
         });
+        const responseStatus = response.status;
+        if(responseStatus === 401){
+            toast.error('Nie można wykonać takiej operacji');
+        }
+        const res = await response.json();
+        const message = JSON.stringify(res);
+        const messageToDisplay = JSON.parse(message);
+        if (response.ok) {
+            setPlace(posts.filter((post) => post.id !== placeId));
+            toast.success(`${messageToDisplay.message}`);
+            window.location.reload();
+        }
+        else{
+            Object.entries(res.errors).forEach(([key, value]) => {
+                toast.error(value.join(', '));
+            });
       }
     } catch (error) {}
   };
@@ -243,7 +245,7 @@ const CentraKulturalne = () => {
 
   const handleEditRatingClick = (post) => {
     setEditingRatingId(post.id);
-    setEditedRating(post.rating); // Assuming you want to edit the rating, adjust if you have more fields
+    setEditedRating(post.rating);
   };
 
   const handleEditedRatingChange = (event) => {
@@ -270,32 +272,32 @@ const CentraKulturalne = () => {
     console.log(token);
 
     try {
-      console.log(data);
-      const response = await fetch(
-        `${process.env.REACT_APP_API_BASE_URL}/api/rating/update-ratting`,
-        {
-          method: "PUT",
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(data),
-        }
-      );
-      const responseStatus = JSON.stringify(response.status);
-      if (responseStatus === 401) {
-        toast.error("Nie można wykonać takiej operacji");
-      }
-      const res = await response.json();
-      const message = JSON.stringify(res);
-      const messageToDisplay = JSON.parse(message);
-      if (response.ok) {
-        setPlace(posts.filter((post) => post.id !== placeId));
-        toast.success(`${messageToDisplay.message}`);
-      } else {
-        Object.entries(res.errors).forEach(([key, value]) => {
-          toast.error(value.join(", "));
+        console.log(data);
+        const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/rating/update-ratting`, {
+            method: 'PUT',
+            headers: {
+                Authorization: `Bearer ${token}`,
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(data)
         });
+        const responseStatus = response.status;
+        if(responseStatus === 401){
+            toast.error('Nie można wykonać takiej operacji');
+        }
+        const res = await response.json();
+        const message = JSON.stringify(res);
+        const messageToDisplay = JSON.parse(message);
+        if (response.ok) {
+            setPlace(posts.filter((post) => post.id !== placeId));
+            toast.success(`${messageToDisplay.message}`);
+            window.location.reload();
+        }
+        else{
+            Object.entries(res.errors).forEach(([key, value]) => {
+                toast.error(value.join(', '));
+            });
+
       }
     } catch (error) {}
   };
@@ -305,6 +307,23 @@ const CentraKulturalne = () => {
     fetchRating();
   }, []);
 
+  const handleCommentError = (error) => {
+    toast.error(`Błąd: ${error.message}`);
+  };
+
+  const handleViewCommentError = (error) => {
+    toast.error(`Błąd: ${error.message}`);
+  };
+
+  const handleCommentSuccess = (message) => {
+    toast.success(message);
+    console.log(message);
+  };
+
+  const handleViewCommentSuccess = (message) => {
+    toast.success(message);
+    console.log(message);
+  };
   return (
     <div
       style={{
@@ -549,6 +568,8 @@ const CentraKulturalne = () => {
                 >
                   Przeglądaj na Mapie
                 </Link>
+                <ViewComments postId={post.id} onError={handleViewCommentError} onSuccess={handleViewCommentSuccess} />
+                <Comment postId={post.id} onError={handleCommentError} onSuccess={handleCommentSuccess} />
               </div>
             )}
           </div>
@@ -560,5 +581,4 @@ const CentraKulturalne = () => {
     </div>
   );
 };
-
 export default CentraKulturalne;
