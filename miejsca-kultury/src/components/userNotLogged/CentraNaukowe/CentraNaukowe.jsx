@@ -21,7 +21,7 @@ function CentraNaukowe() {
     location: { lat: null, lng: null },
   });
   const [placeId, setPlace] = useState();
-  const [editedRating, setEditedRating] = useState(null);
+  //const [editedRating, setEditedRating] = useState(null);
   const [rating, setRating] = useState();
   const [averageRating, setAverageRating] = useState();
   const [ratingPostId, setRatingPostId] = useState(null);
