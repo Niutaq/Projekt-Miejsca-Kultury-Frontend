@@ -4,8 +4,10 @@ import LocationFunction from "../ImageSystem/Location";
 import TextFieldSection from "../ImageSystem/Comment";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import Comment from "../CommentSection/commentSection";
+import ViewComments from "../CommentSection/viewComments";
 
-const CentraKulturalne = () => {
+function CentraKulturalne() {
   const [posts, setPosts] = useState(null);
   const [location, setLocation] = useState({ lat: null, lng: null });
   const [newTitle, setName] = useState("");
@@ -20,7 +22,6 @@ const CentraKulturalne = () => {
   });
   const [placeId, setPlace] = useState();
   const [rating,setRating] = useState();
-  const [averageRating,setAverageRating] = useState();
   const [ratingPostId, setRatingPostId] = useState(null);
   const [editingRatingId, setEditingRatingId] = useState(null);
   const [editedRating, setEditedRating] = useState(null);
@@ -34,6 +35,7 @@ const CentraKulturalne = () => {
       const res = await response.json();
       const message = JSON.stringify(res);
       const messageToDisplay = JSON.parse(message);
+      setPlace(placeId);
 
       if (response.ok) {
         setPosts(res);
@@ -64,8 +66,7 @@ const CentraKulturalne = () => {
           body: JSON.stringify(logobj),
         }
       );
-
-      const responseStatus = JSON.stringify(response.status);
+      const responseStatus = response.status;
       if (responseStatus === 401) {
         toast.error("Nie można wykonać takiej operacji");
       }
@@ -141,7 +142,7 @@ const CentraKulturalne = () => {
           body: JSON.stringify(data),
         }
       );
-      const responseStatus = JSON.stringify(response.status);
+      const responseStatus = response.status;
       if (responseStatus === 401) {
         toast.error("Nie można wykonać takiej operacji");
       }
@@ -193,7 +194,7 @@ const CentraKulturalne = () => {
             },
             body: JSON.stringify(data)
         });
-        const responseStatus = JSON.stringify(response.status);
+        const responseStatus = response.status;
         if(responseStatus === 401){
             toast.error('Nie można wykonać takiej operacji');
         }
@@ -203,6 +204,7 @@ const CentraKulturalne = () => {
         if (response.ok) {
             setPlace(posts.filter((post) => post.id !== placeId));
             toast.success(`${messageToDisplay.message}`);
+            window.location.reload();
         }
         else{
             Object.entries(res.errors).forEach(([key, value]) => {
@@ -271,7 +273,7 @@ const fetchRating = async (placeId) => {
             },
             body: JSON.stringify(data)
         });
-        const responseStatus = JSON.stringify(response.status);
+        const responseStatus = response.status;
         if(responseStatus === 401){
             toast.error('Nie można wykonać takiej operacji');
         }
@@ -281,6 +283,7 @@ const fetchRating = async (placeId) => {
         if (response.ok) {
             setPlace(posts.filter((post) => post.id !== placeId));
             toast.success(`${messageToDisplay.message}`);
+            window.location.reload();
         }
         else{
             Object.entries(res.errors).forEach(([key, value]) => {
@@ -295,6 +298,23 @@ const fetchRating = async (placeId) => {
     fetchRating();
   }, []);
 
+  const handleCommentError = (error) => {
+    toast.error(`Błąd: ${error.message}`);
+  };
+
+  const handleViewCommentError = (error) => {
+    toast.error(`Błąd: ${error.message}`);
+  };
+
+  const handleCommentSuccess = (message) => {
+    toast.success(message);
+    console.log(message);
+  };
+
+  const handleViewCommentSuccess = (message) => {
+    toast.success(message);
+    console.log(message);
+  };
   return (
     <div
       style={{
@@ -533,6 +553,8 @@ const fetchRating = async (placeId) => {
                 >
                   Przeglądaj na Mapie
                 </Link>
+                <ViewComments postId={post.id} onError={handleViewCommentError} onSuccess={handleViewCommentSuccess} />
+                <Comment postId={post.id} onError={handleCommentError} onSuccess={handleCommentSuccess} />
               </div>
             )}
           </div>
@@ -544,5 +566,4 @@ const fetchRating = async (placeId) => {
     </div>
   );
 };
-
 export default CentraKulturalne;

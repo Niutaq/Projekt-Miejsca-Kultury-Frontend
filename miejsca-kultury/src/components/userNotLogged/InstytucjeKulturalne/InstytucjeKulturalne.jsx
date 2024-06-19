@@ -2,9 +2,9 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import LocationFunction from "../ImageSystem/Location";
 import TextFieldSection from "../ImageSystem/Comment";
-import Comment from "../CommentSection/commentSection";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import Comment from "../CommentSection/commentSection";
 import ViewComments from "../CommentSection/viewComments";
 
 function InstytucjeKulturalne() {
@@ -66,7 +66,6 @@ function InstytucjeKulturalne() {
           body: JSON.stringify(logobj),
         }
       );
-
       const responseStatus = response.status;
       if (responseStatus === 401) {
         toast.error("Nie można wykonać takiej operacji");
@@ -205,6 +204,7 @@ function InstytucjeKulturalne() {
         if (response.ok) {
             setPlace(posts.filter((post) => post.id !== placeId));
             toast.success(`${messageToDisplay.message}`);
+            window.location.reload();
         }
         else{
             Object.entries(res.errors).forEach(([key, value]) => {
@@ -283,6 +283,7 @@ const fetchRating = async (placeId) => {
         if (response.ok) {
             setPlace(posts.filter((post) => post.id !== placeId));
             toast.success(`${messageToDisplay.message}`);
+            window.location.reload();
         }
         else{
             Object.entries(res.errors).forEach(([key, value]) => {
@@ -298,11 +299,13 @@ const fetchRating = async (placeId) => {
   }, []);
 
   const handleCommentError = (error) => {
-    toast.error(`Błąd: ${error.message}`);
+    toast.error(`Błąd: ${error}`);
+    console.log(error);
   };
 
   const handleViewCommentError = (error) => {
-    toast.error(`Błąd: ${error.message}`);
+    toast.error(`Błąd: ${error}`);
+    console.log(error);
   };
 
   const handleCommentSuccess = (message) => {

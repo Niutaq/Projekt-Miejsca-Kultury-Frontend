@@ -5,12 +5,13 @@ import Button from '@mui/material/Button';
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 function ViewComment({ postId, onError, onSuccess }) {
+  const token = localStorage.getItem('token');
   const [comments, setComments] = useState([]);
 
   useEffect(() => {
     const fetchComments = async () => {
       try {
-        const response = await fetch(`http://localhost:5000/api/comment/${postId}`, {
+        const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/comment/${postId}`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
@@ -54,10 +55,9 @@ function ViewComment({ postId, onError, onSuccess }) {
       if (response.ok) {
         onSuccess(res.message);
         setComments((prevComments) => prevComments.filter(comment => comment.id !== id));
+        window.location.reload();
       } else {
-        Object.entries(res.errors).forEach(([key, value]) => {
-          onError(value.join(', '));
-        });
+          onError(res.title);
       }
     } catch (error) {
       console.error('Error:', error);
@@ -66,7 +66,6 @@ function ViewComment({ postId, onError, onSuccess }) {
 
   const updateComment = async (id, newMessage) => {
     try {
-      const token = localStorage.getItem('token');
       const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/comment/update-comment`, {
         method: 'PUT',
         headers: {
@@ -81,10 +80,9 @@ function ViewComment({ postId, onError, onSuccess }) {
       if (response.ok) {
         onSuccess(res.message);
         setComments((prevComments) => prevComments.map(comment => comment.id === id ? { ...comment, message: newMessage } : comment));
+        window.location.reload();
       }  else {
-        Object.entries(res.errors).forEach(([key, value]) => {
-          onError(value.join(', '));
-        });
+        onError(res.title);
       }
     } catch (error) {
       console.error('Error:', error);
@@ -105,14 +103,18 @@ function ViewComment({ postId, onError, onSuccess }) {
                 <p><strong>{comment.name} {comment.surname}</strong></p>
                 <p>{new Date(comment.dateAdded).toLocaleString()}</p>
                 <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '5px' }}>
-                  <Button
-                    variant="contained"
-                    color="secondary"
-                    onClick={() => deleteComment(comment.id)}
-                    style={{ marginRight: '5px' }}
-                  >
-                    Usuń
-                  </Button>
+                  {token && (
+                    <Button
+                      variant="contained"
+                      color="secondary"
+                      onClick={() => deleteComment(comment.id)}
+                      style={{ marginRight: '5px' }}
+                    >
+                      Usuń
+                    </Button>
+                  )}
+
+                  {token && (
                   <Button
                     variant="contained"
                     color="primary"
@@ -125,6 +127,7 @@ function ViewComment({ postId, onError, onSuccess }) {
                   >
                     Edytuj
                   </Button>
+                 )}
                 </div>
               </li>
             ))}
