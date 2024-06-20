@@ -89,13 +89,16 @@ export default function ImageSystem() {
       formData.append("description", Description);
       formData.append("Category", Category);
 
-      const response = await fetch(`http://localhost:5000/api/post/add-posts`, {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-        body: formData,
-      });
+      const response = await fetch(
+        `${process.env.REACT_APP_API_BASE_URL}/api/post/add-posts`,
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          body: formData,
+        }
+      );
       const responseStatus = JSON.stringify(response.status);
       if (responseStatus === 401) {
         toast.error("Nie można wykonać takiej operacji");
