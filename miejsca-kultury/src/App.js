@@ -27,18 +27,22 @@ import "./App.css";
 
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(!!localStorage.getItem("token"));
-  const [userRoles, setUserRoles] = useState(localStorage.getItem("role") ? localStorage.getItem("role").split(',') : []);
+  const [userRoles, setUserRoles] = useState(localStorage.getItem("role")?.split(',') || []);
+
+  window.dispatchEvent(new Event("localStorageUpdate"));
 
   useEffect(() => {
-    const handleStorageChange = () => {
+    const handleAuthChange = () => {
       setIsLoggedIn(!!localStorage.getItem("token"));
-      setUserRoles(localStorage.getItem("role") ? localStorage.getItem("role").split(',') : []);
+      setUserRoles(localStorage.getItem("role")?.split(',') || []);
     };
 
-    window.addEventListener("storage", handleStorageChange);
+    window.addEventListener("storage", handleAuthChange);
+    window.addEventListener("localStorageUpdate", handleAuthChange);
 
     return () => {
-      window.removeEventListener("storage", handleStorageChange);
+      window.removeEventListener("storage", handleAuthChange);
+      window.removeEventListener("localStorageUpdate", handleAuthChange);
     };
   }, []);
 

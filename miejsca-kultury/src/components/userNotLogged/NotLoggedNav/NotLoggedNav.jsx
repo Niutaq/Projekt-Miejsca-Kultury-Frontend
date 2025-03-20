@@ -39,14 +39,13 @@ export default function NotLoggedNav() {
         </Container>
       </Navbar>
       <div className="d-flex mt-5">
-        <div
-          className="bg-light border"
-          style={{
-            width: "200px",
-            height: "100vh",
-            position: "fixed",
-            top: "56px",
-          }}
+      <div className="bg-light border d-none d-lg-block" 
+        style={{ 
+          width: "200px",
+          height: "calc(100vh - 56px)",
+          position: "fixed",
+          top: "56px"
+        }}
         >
           <Nav className="flex-column p-2">
             <Button

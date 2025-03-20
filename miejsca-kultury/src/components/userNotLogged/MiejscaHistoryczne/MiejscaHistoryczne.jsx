@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
 import LocationFunction from "../ImageSystem/Location";
 import TextFieldSection from "../ImageSystem/Comment";
 import { ToastContainer, toast } from "react-toastify";
@@ -7,6 +6,7 @@ import "react-toastify/dist/ReactToastify.css";
 import Comment from "../CommentSection/commentSection";
 import ViewComments from "../CommentSection/viewComments";
 import LikeBtn from "../LikeBtn/LikeBtn";
+
 function MiejscaHistoryczne() {
   const [posts, setPosts] = useState(null);
   const [location, setLocation] = useState({ lat: null, lng: null });
@@ -20,9 +20,9 @@ function MiejscaHistoryczne() {
     category: "",
     location: { lat: null, lng: null },
   });
+
   const [placeId, setPlace] = useState();
   const [rating, setRating] = useState();
-  const [averageRating, setAverageRating] = useState();
 
   const [ratingPostId, setRatingPostId] = useState(null);
   const [editingRatingId, setEditingRatingId] = useState(null);
@@ -43,8 +43,9 @@ function MiejscaHistoryczne() {
       setPlace(placeId);
       console.log(message);
       if (response.ok) {
+        
         setPosts(res);
-        console.log(posts);
+
       } else {
         toast.error(`${messageToDisplay.title}`);
         Object.entries(res.errors).forEach(([key, value]) => {

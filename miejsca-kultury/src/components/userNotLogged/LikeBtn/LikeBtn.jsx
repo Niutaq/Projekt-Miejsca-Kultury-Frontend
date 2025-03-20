@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { gsap } from "gsap";
-import { ToastContainer, toast } from "react-toastify";
+import { ToastContainer } from "react-toastify";
 
 export default function LikeBtn({ sumaLike, id_like }) {
   const [likes, setLikes] = useState(sumaLike);
@@ -25,10 +25,8 @@ export default function LikeBtn({ sumaLike, id_like }) {
 
       if (response.ok) {
         const res = await response.json();
-        setLikes(res.newLikesCount); // Assuming backend response has updated likes count
-        setClicked(true);
-      } else {
-        // handle error
+        setLikes(res.newLikesCount);
+        setClicked(!clicked);
       }
     } catch (error) {
       console.error("Błąd:", error.message);
