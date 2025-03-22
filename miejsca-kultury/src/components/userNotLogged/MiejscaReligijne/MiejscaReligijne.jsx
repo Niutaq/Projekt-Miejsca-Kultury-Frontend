@@ -7,6 +7,7 @@ import "react-toastify/dist/ReactToastify.css";
 import Comment from "../CommentSection/commentSection";
 import ViewComments from "../CommentSection/viewComments";
 import LikeBtn from "../LikeBtn/LikeBtn";
+
 function MiejscaReligijne() {
   const [posts, setPosts] = useState(null);
   const [location, setLocation] = useState({ lat: null, lng: null });
@@ -22,7 +23,6 @@ function MiejscaReligijne() {
   });
   const [placeId, setPlace] = useState();
   const [rating, setRating] = useState();
-  const [averageRating, setAverageRating] = useState();
 
   const [ratingPostId, setRatingPostId] = useState(null);
   const [editingRatingId, setEditingRatingId] = useState(null);
@@ -37,11 +37,13 @@ function MiejscaReligijne() {
       const response = await fetch(
         `${process.env.REACT_APP_API_BASE_URL}/api/post/6`
       );
+
       const res = await response.json();
       const message = JSON.stringify(res);
       const messageToDisplay = JSON.parse(message);
+
       setPlace(placeId);
-      console.log(message);
+      
       if (response.ok) {
         setPosts(res);
         console.log(posts);

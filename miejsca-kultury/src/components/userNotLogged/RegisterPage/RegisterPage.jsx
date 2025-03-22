@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { Link } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -10,7 +10,6 @@ const RegisterPage = () => {
     const [password, setPassword] = useState('');
     const [repeatPassword, setRepeatPassword] = useState('');
 
-    const navigate = useNavigate();
     const isValidate = () => {
         let isProceed = true;
         let errorMessage = 'Proszę uzupełnić brakujące dane: ';
